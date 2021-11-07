@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">FindATutor</string>
+    <string name="preferredLoginState">loginState</string>
+</resources>
