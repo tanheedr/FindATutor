@@ -93,14 +93,14 @@ public class TutorMyAccountActivity extends AppCompatActivity {
             super.onPostExecute(unused);
             try {
                 strJson = response.body().string();
-                updateUserData(strJson);
+                presentUserData(strJson);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    private void updateUserData(String strJson){
+    private void presentUserData(String strJson){
 
         try {
             JSONArray parent = new JSONArray(strJson);
@@ -112,12 +112,12 @@ public class TutorMyAccountActivity extends AppCompatActivity {
             String stringDescription = child.getString("Description");
             Glide.with(this).load(imgUrl).into(textProfilePic);
 
-            String url1 = "https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500";
-            URL url = new URL(url1.toString());
+            /*String ImageUrl = "https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500";
+            URL url = new URL(ImageUrl.toString());
             Bitmap bitmap = BitmapFactory.decodeStream(url.openConnection().getInputStream());
             Canvas canvas = new Canvas(bitmap);
 
-            textProfilePic.draw(canvas);
+            textProfilePic.draw(canvas);*/
             textSubjects.setText(stringSubjects);
             textHourlyCost.setText(stringHourlyCost);
             textQualifications.setText(stringQualifications);
