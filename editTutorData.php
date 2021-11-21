@@ -8,7 +8,7 @@ $qualifications = $_POST["Qualifications"];
 $description = $_POST["Description"];
 
 if ($connection){
-    if($hourlyCost !== /\b\d{1,3}(?:,?\d{3})*(?:\.\d{2})?\b/){ ///https://stackoverflow.com/questions/4982291/how-to-check-if-an-entered-value-is-currency
+    if(preg_match("/^[0-9]+(?:\.[0-9]{1,2})?$/", $hourlyCost) !== 1){ //https://stackoverflow.com/questions/4982291/how-to-check-if-an-entered-value-is-currency
         echo "Not a valid price";
     }
     else{

@@ -1,22 +1,24 @@
 <?php
 
-/*if($_SERVER['REQUEST_METHOD']=='GET'){
-$Tutorid = $_GET['id'];*/
-
 require "connection.php";
+include ("login.php");
 header('content-type: application/json');
 
-/*$TutorID = $_POST["TutorID"];*/
-$TutorID = 1;
+session_start();
 
-$query = "SELECT * FROM tutordescription WHERE TutorID = '$TutorID'";
+//echo $_SESSION['ID'][0];
+echo "bbbbbbbbbb";
+//$TutorID = $_SESSION['ID'][0];
+//echo $TutorID;
+echo "aaaaaaaaaaaaaaaaaaaaaaaaaa";
+
+/*$query = "SELECT * FROM tutordescription WHERE TutorID = '$TutorID'";
 $res = mysqli_query($connection, $query);
 $json_data = array();
 
 while($row = mysqli_fetch_assoc($res)){
     $json_data[] = $row;
 }
-echo json_encode($json_data);
-/*}*/
+echo json_encode($json_data);*/
 
 ?>
