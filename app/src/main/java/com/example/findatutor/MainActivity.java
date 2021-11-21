@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
                 return param;
             }
         };
-        request.setRetryPolicy(new DefaultRetryPolicy(30000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        request.setRetryPolicy(new DefaultRetryPolicy(10000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         MySingleton.getmInstance(MainActivity.this).addToRequestQueue(request);
     }
 }

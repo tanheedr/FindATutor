@@ -32,6 +32,7 @@
 
     </com.rengwuxian.materialedittext.MaterialEditText>
 
+
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -40,7 +41,9 @@
         android:textAllCaps="false"
         android:background="@color/colorPrimaryDark"
         android:textColor="@color/white"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"/>
 
     <Button
         android:layout_width="match_parent"
@@ -50,7 +53,9 @@
         android:textAllCaps="false"
         android:background="@color/colorPrimaryDark"
         android:textColor="@color/white"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"/>
 
     <Button
         android:layout_width="match_parent"
@@ -60,7 +65,9 @@
         android:textAllCaps="false"
         android:background="@color/colorPrimaryDark"
         android:textColor="@color/white"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"/>
 
     <Button
         android:layout_width="match_parent"
@@ -70,6 +77,8 @@
         android:textAllCaps="false"
         android:background="@color/colorPrimaryDark"
         android:textColor="@color/white"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"/>
 
 </LinearLayout>

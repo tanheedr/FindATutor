@@ -118,6 +118,7 @@ public class TutorMyAccountActivity extends AppCompatActivity {
             Canvas canvas = new Canvas(bitmap);
 
             textProfilePic.draw(canvas);*/
+            textProfilePic.setImageResource(R.drawable.ic_launcher_background);
             textSubjects.setText(stringSubjects);
             textHourlyCost.setText(stringHourlyCost);
             textQualifications.setText(stringQualifications);
