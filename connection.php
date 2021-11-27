@@ -35,11 +35,4 @@ else{
     echo "Connection Success";
 }*/
 
-/*$db_name = "db_name";
-$username = "username";
-$password = "password";
-$host = "either ip address or localhost";
-
-$connection = mysqli_connect($host,$username,$password,$db_name);*/
-
 ?>
