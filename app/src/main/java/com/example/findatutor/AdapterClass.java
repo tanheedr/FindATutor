@@ -31,7 +31,9 @@ public class AdapterClass extends RecyclerView.Adapter<AdapterClass.MyViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int position) {
-        myViewHolder.fullName.setText(tutors.get(position).getFullName());
+        myViewHolder.firstName.setText(tutors.get(position).getFirstName());
+        myViewHolder.surname.setText(tutors.get(position).getSurname());
+        //myViewHolder.fullName.setText(tutors.get(position).getFullName());
         myViewHolder.subjects.setText(tutors.get(position).getSubjects());
         myViewHolder.hourlyCost.setText(tutors.get(position).getHourlyCost());
         myViewHolder.qualifications.setText(tutors.get(position).getQualifications());
@@ -44,10 +46,12 @@ public class AdapterClass extends RecyclerView.Adapter<AdapterClass.MyViewHolder
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView fullName, subjects, hourlyCost, qualifications, description;
+        TextView firstName, surname, fullName, subjects, hourlyCost, qualifications, description;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            fullName = itemView.findViewById(R.id.tutorFullName);
+            firstName = itemView.findViewById(R.id.tutorFirstName);
+            surname = itemView.findViewById(R.id.tutorSurname);
+            //fullName = itemView.findViewById(R.id.tutorFullName);
             subjects = itemView.findViewById(R.id.tutorSubjects);
             hourlyCost = itemView.findViewById(R.id.tutorHourlyCost);
             qualifications = itemView.findViewById(R.id.tutorQualifications);

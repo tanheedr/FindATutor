@@ -21,6 +21,8 @@
         <activity android:name=".TutorMyAccountActivity" /> <!-- tools:replace="android:appComponentFactory" -->
         <activity android:name=".HomepageActivity" />
         <activity android:name=".RegisterActivity" />
+        <activity android:name=".SearchActivity"/>
+        <activity android:name=".MessageActivity"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

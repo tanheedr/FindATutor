@@ -4,15 +4,25 @@ import com.google.gson.annotations.SerializedName;
 
 public class Tutor {
 
-    @SerializedName("FullName") private String fullName;
+    @SerializedName("FirstName") private String firstName;
+    @SerializedName("Surname") private String surname;
+    //@SerializedName("FullName") private String fullName;
     @SerializedName("Subjects") private String subjects;
     @SerializedName("HourlyCost") private String hourlyCost;
     @SerializedName("Qualifications") private String qualifications;
     @SerializedName("Description") private String description;
 
-    public String getFullName() {
-        return fullName;
+    public String getFirstName() {
+        return firstName;
     }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    /*public String getFullName() {
+        return fullName;
+    }*/
 
     public String getSubjects() {
         return subjects;

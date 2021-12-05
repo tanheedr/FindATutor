@@ -21,6 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Search"
+        android:focusable="false"
         app:met_floatingLabel="normal"
         android:layout_marginTop="10dp"
         android:layout_marginRight="20dp"
@@ -31,15 +32,6 @@
         android:inputType="text">
 
     </com.rengwuxian.materialedittext.MaterialEditText>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="10dp"
-        android:id="@+id/recyclerView"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
     <Button
         android:layout_width="match_parent"
