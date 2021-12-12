@@ -1,13 +1,13 @@
 <?php
 
-require "login.php";
+//require "login.php";
+require "connection.php";
 header('content-type: application/json');
 
 session_start();
 
 //echo $_SESSION['ID'][0];
-$TutorID = 1;
-echo $TutorID;
+$TutorID = 3;
 
 $query = "SELECT * FROM tutordescription WHERE TutorID = '$TutorID'";
 $res = mysqli_query($connection, $query);

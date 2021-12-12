@@ -2,6 +2,7 @@
 
 require "connection.php";
 
+$photo = $_POST["Photo"];
 $subjects = $_POST["Subjects"];
 $hourlyCost = $_POST["HourlyCost"];
 $qualifications = $_POST["Qualifications"];
@@ -12,7 +13,7 @@ if ($connection){
         echo "Not a valid price";
     }
     else{
-        $sqlUpdateData = "UPDATE tutordescription SET Subjects = '$subjects', HourlyCost = '$hourlyCost', Qualifications = '$qualifications', Description = '$description' WHERE TutorID = 3";
+        $sqlUpdateData = "UPDATE tutordescription SET Photo = '$photo', Subjects = '$subjects', HourlyCost = '$hourlyCost', Qualifications = '$qualifications', Description = '$description' WHERE TutorID = 3";
         if (mysqli_query($connection, $sqlUpdateData)){
             echo "Successfully Updated";
         }
