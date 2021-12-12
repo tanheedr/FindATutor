@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -29,32 +30,14 @@ public class SearchActivity extends AppCompatActivity {
     private AdapterClass adapter;
     private ApiInterface apiInterface;
 
-    Button viewProfile, message;
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        viewProfile = findViewById(R.id.tutorViewProfile);
-        message = findViewById(R.id.tutorMessage);
         recyclerView = findViewById(R.id.recyclerView);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
-
-        /* viewProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(SearchActivity.this, TutorMyAccountActivity.class));
-            }
-        });
-
-        message.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(SearchActivity.this, MessageActivity.class));
-            }
-        });*/
 
         fetchTutors("");
 
@@ -65,7 +48,7 @@ public class SearchActivity extends AppCompatActivity {
         Call<List<Tutor>> call = apiInterface.getTutors(subjectSearch);
         call.enqueue(new Callback<List<Tutor>>() {
             @Override
-            public void onResponse(Call<List<Tutor>> call, Response<List<Tutor>> response) {
+            public void onResponse(@NonNull Call<List<Tutor>> call, @NonNull Response<List<Tutor>> response) {
                 tutors = response.body();
                 adapter = new AdapterClass(tutors, SearchActivity.this);
                 recyclerView.setAdapter(adapter);
@@ -73,7 +56,7 @@ public class SearchActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<List<Tutor>> call, Throwable t) {
+            public void onFailure(@NonNull Call<List<Tutor>> call, @NonNull Throwable t) {
                 Toast.makeText(SearchActivity.this, "Error on:" + t.toString(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -85,7 +68,6 @@ public class SearchActivity extends AppCompatActivity {
         inflater.inflate(R.menu.menu, menu);
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
-
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setIconifiedByDefault(false);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -94,7 +76,6 @@ public class SearchActivity extends AppCompatActivity {
                 fetchTutors(query);
                 return false;
             }
-
             @Override
             public boolean onQueryTextChange(String newText) {
                 fetchTutors(newText);

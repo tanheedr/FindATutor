@@ -22,8 +22,8 @@
         android:layout_width="300px"
         android:layout_height="300px"
         android:id="@+id/editProfilePic"
-        android:layout_marginTop="20dp"/>
-    <!--android:src=""-->
+        android:layout_marginTop="20dp"
+        android:src="@mipmap/ic_launcher"/>
 
     <Button
         android:layout_width="wrap_content"

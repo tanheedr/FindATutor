@@ -36,7 +36,7 @@ public class TutorMyAccountActivity extends AppCompatActivity {
     TextView textSubjects, textHourlyCost, textQualifications, textDescription;
     Button edit;
 
-    private String strJson, apiUrl = "http://192.168.0.19/FindATutor/tutorData.php";
+    private String strJson, apiUrl = "http://192.168.0.19/FindATutor/tutorData.php"; /*AT HOME: 192.168.0.19, AT SCHOOL 2ND PC: 192.168.137.228*/
     private OkHttpClient client;
     private Response response;
 
@@ -112,13 +112,6 @@ public class TutorMyAccountActivity extends AppCompatActivity {
             String stringDescription = child.getString("Description");
             Glide.with(this).load(imgUrl).into(textProfilePic);
 
-            /*String ImageUrl = "https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500";
-            URL url = new URL(ImageUrl.toString());
-            Bitmap bitmap = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-            Canvas canvas = new Canvas(bitmap);
-
-            textProfilePic.draw(canvas);*/
-            textProfilePic.setImageResource(R.drawable.ic_launcher_background);
             textSubjects.setText(stringSubjects);
             textHourlyCost.setText(stringHourlyCost);
             textQualifications.setText(stringQualifications);

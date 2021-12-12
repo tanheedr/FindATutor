@@ -44,6 +44,13 @@ public class HomepageActivity extends AppCompatActivity {
         logout = findViewById(R.id.logout);
         search = findViewById(R.id.search);
 
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(HomepageActivity.this, SearchActivity.class));
+            }
+        });
+
         myAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,13 +73,6 @@ public class HomepageActivity extends AppCompatActivity {
                 editor.apply();
                 startActivity(new Intent(HomepageActivity.this, MainActivity.class));
                 finish();
-            }
-        });
-
-        search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(HomepageActivity.this, SearchActivity.class));
             }
         });
 

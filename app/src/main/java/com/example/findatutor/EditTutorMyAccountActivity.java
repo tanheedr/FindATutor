@@ -1,9 +1,11 @@
 package com.example.findatutor;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -18,7 +20,9 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.github.drjacky.imagepicker.ImagePicker;
 import com.rengwuxian.materialedittext.MaterialEditText;
+import com.yalantis.ucrop.view.CropImageView;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -42,10 +46,17 @@ public class EditTutorMyAccountActivity extends AppCompatActivity {
         upload = findViewById(R.id.editUpload);
         save = findViewById(R.id.SaveTutorAccount);
 
+        upload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ImagePicker.Companion.with(EditTutorMyAccountActivity.this).cropSquare().compress(1024).maxResultSize(1080, 1080).start();
+            }
+        });
+
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Code to push data from input to db, get from register
+                String newPhoto = editProfilePic.();
                 String newSubjects = editSubjects.getText().toString();
                 String newHourlyCost = editHourlyCost.getText().toString();
                 String newQualifications = editQualifications.getText().toString();
@@ -54,14 +65,30 @@ public class EditTutorMyAccountActivity extends AppCompatActivity {
                     Toast.makeText(EditTutorMyAccountActivity.this, "All fields required", Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    updateUserData(newSubjects, newHourlyCost, newQualifications, newDescription);
+                    updateUserData(newPhoto, newSubjects, newHourlyCost, newQualifications, newDescription);
                 }
             }
         });
 
     }
 
-    private void updateUserData(String subjects, String hourlyCost, String qualifications, String description){
+    /*protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == CropImage.CROP){         //////////////////////////DO
+            CropImageView.Ac
+            assert data != null;
+            Uri uri = data.getData();
+            editProfilePic.setImageURI(uri);
+        }else{
+            assert data != null;
+            Uri uri = data.getData();
+            editProfilePic.setImageURI(uri);
+        }
+
+    }*/
+
+    private void updateUserData(String photo, String subjects, String hourlyCost, String qualifications, String description){
         final ProgressDialog progressDialog = new ProgressDialog(EditTutorMyAccountActivity.this);
         progressDialog.setCancelable(false);
         progressDialog.setIndeterminate(false);
@@ -92,6 +119,7 @@ public class EditTutorMyAccountActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 HashMap<String, String> param = new HashMap<>();
+                param.put("Photo", photo);
                 param.put("Subjects", subjects);
                 param.put("HourlyCost", hourlyCost);
                 param.put("Qualifications", qualifications);

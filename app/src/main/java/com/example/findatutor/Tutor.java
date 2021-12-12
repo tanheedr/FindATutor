@@ -6,7 +6,7 @@ public class Tutor {
 
     @SerializedName("FirstName") private String firstName;
     @SerializedName("Surname") private String surname;
-    //@SerializedName("FullName") private String fullName;
+    @SerializedName("Photo") private String photo;
     @SerializedName("Subjects") private String subjects;
     @SerializedName("HourlyCost") private String hourlyCost;
     @SerializedName("Qualifications") private String qualifications;
@@ -20,9 +20,9 @@ public class Tutor {
         return surname;
     }
 
-    /*public String getFullName() {
-        return fullName;
-    }*/
+    public String getPhoto(){
+        return photo;
+    }
 
     public String getSubjects() {
         return subjects;
