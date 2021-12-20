@@ -1,6 +1,6 @@
 <?php
 
-require_once "connection.php";
+require "connection.php";
 
 if (isset($_GET['subject'])){
     $subject = $_GET['subject'];
