@@ -75,7 +75,7 @@ public class RegisterActivity extends AppCompatActivity {
         progressDialog.setIndeterminate(false);
         progressDialog.setTitle("Creating New Account");
         progressDialog.show();
-        String url = "http://192.168.0.19/FindATutor/register.php"; /*AT HOME: 192.168.0.19, AT SCHOOL 2ND PC: 192.168.137.228*/
+        String url = "http://192.168.0.19/FindATutor/register.php"; /*AT HOME: 192.168.0.19, AT SCHOOL 2ND PC: 192.168.137.228/190*/
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

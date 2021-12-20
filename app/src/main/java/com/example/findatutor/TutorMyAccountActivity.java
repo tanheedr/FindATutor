@@ -36,7 +36,7 @@ public class TutorMyAccountActivity extends AppCompatActivity {
     TextView textSubjects, textHourlyCost, textQualifications, textDescription;
     Button edit;
 
-    private String strJson, apiUrl = "http://192.168.0.19/FindATutor/tutorData.php"; /*AT HOME: 192.168.0.19, AT SCHOOL 2ND PC: 192.168.137.228*/
+    private String strJson, apiUrl = "http://192.168.0.19/FindATutor/tutorData.php"; /*AT HOME: 192.168.0.19, AT SCHOOL 2ND PC: 192.168.137.228/190*/
     private OkHttpClient client;
     private Response response;
 

@@ -25,6 +25,11 @@ import com.rengwuxian.materialedittext.MaterialEditText;
 import java.util.HashMap;
 import java.util.Map;
 
+/* package com.example.findatutor;
+Places where change IP address:
+MainActivity, RegisterActivity, TutorMyAccountActivity, EditTutorMyAccountActivity, ApiClient
+*/
+
 public class MainActivity extends AppCompatActivity {
 
     MaterialEditText email, password;
@@ -78,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
         progressDialog.setIndeterminate(false);
         progressDialog.setTitle("Logging In");
         progressDialog.show();
-        String url = "http://192.168.0.19/FindATutor/login.php"; /*AT HOME: 192.168.0.19, AT SCHOOL 2ND PC: 192.168.137.228 "http://51.38.80.233/FindATutor/login.php" "http://10.0.2.2/FindATutor/login.php"*/
+        String url = "http://192.168.0.19/FindATutor/login.php"; /*AT HOME: 192.168.0.19, AT SCHOOL 2ND PC: 192.168.137.228/190 "http://51.38.80.233/FindATutor/login.php" "http://10.0.2.2/FindATutor/login.php"*/
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

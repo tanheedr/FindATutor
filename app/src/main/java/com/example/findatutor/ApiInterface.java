@@ -8,6 +8,10 @@ import retrofit2.http.Query;
 
 public interface ApiInterface {
 
+    @GET("getAllMessages.php")
+    Call<List<User>> getUsers ();
+
     @GET("getTutorData.php")
     Call<List<Tutor>> getTutors (@Query("subject") String subjectSearch);
+
 }

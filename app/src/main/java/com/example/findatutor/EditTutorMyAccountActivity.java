@@ -3,11 +3,16 @@ package com.example.findatutor;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -24,6 +29,9 @@ import com.github.drjacky.imagepicker.ImagePicker;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.yalantis.ucrop.view.CropImageView;
 
+import java.io.IOException;
+import java.net.URI;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,6 +40,7 @@ public class EditTutorMyAccountActivity extends AppCompatActivity {
     ImageView editProfilePic;
     MaterialEditText editSubjects, editHourlyCost, editQualifications, editDescription;
     Button upload, save;
+    URI uri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,21 +51,22 @@ public class EditTutorMyAccountActivity extends AppCompatActivity {
         editSubjects = findViewById(R.id.editSubjects);
         editHourlyCost = findViewById(R.id.editHourlyCost);
         editQualifications = findViewById(R.id.editQualifications);
-        editDescription = findViewById(R.id.editQualifications);
+        editDescription = findViewById(R.id.editDescription);
         upload = findViewById(R.id.editUpload);
         save = findViewById(R.id.SaveTutorAccount);
 
         upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ImagePicker.Companion.with(EditTutorMyAccountActivity.this).cropSquare().compress(1024).maxResultSize(1080, 1080).start();
+                ImagePicker.Companion.with(EditTutorMyAccountActivity.this).crop().cropSquare().compress(1024).maxResultSize(1080, 1080).start();
             }
         });
 
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String newPhoto = editProfilePic.();
+                Log.d("TAG", editProfilePic.toString());
+                String newPhoto = editProfilePic.toString();
                 String newSubjects = editSubjects.getText().toString();
                 String newHourlyCost = editHourlyCost.getText().toString();
                 String newQualifications = editQualifications.getText().toString();
@@ -72,10 +82,22 @@ public class EditTutorMyAccountActivity extends AppCompatActivity {
 
     }
 
-    /*protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == CropImage.CROP){         //////////////////////////DO
+        Uri uri = data.getData();
+        Log.d("TAG 2", uri.toString());
+        //URL url = uri.toURL();
+        Bitmap bitmap = null;
+        try {
+            bitmap = MediaStore.Images.Media.
+                    getBitmap(this.getContentResolver(), uri);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        editProfilePic.setImageBitmap(bitmap);
+
+        /*if (requestCode == CropImage.CROP){         //////////////////////////DO
             CropImageView.Ac
             assert data != null;
             Uri uri = data.getData();
@@ -84,9 +106,9 @@ public class EditTutorMyAccountActivity extends AppCompatActivity {
             assert data != null;
             Uri uri = data.getData();
             editProfilePic.setImageURI(uri);
-        }
+        }*/
 
-    }*/
+    }
 
     private void updateUserData(String photo, String subjects, String hourlyCost, String qualifications, String description){
         final ProgressDialog progressDialog = new ProgressDialog(EditTutorMyAccountActivity.this);
@@ -94,7 +116,7 @@ public class EditTutorMyAccountActivity extends AppCompatActivity {
         progressDialog.setIndeterminate(false);
         progressDialog.setTitle("Updating Information");
         progressDialog.show();
-        String url = "http://192.168.0.19/FindATutor/editTutorData.php";
+        String url = "http://192.168.0.19/FindATutor/editTutorData.php"; /*AT HOME: 192.168.0.19, AT SCHOOL 2ND PC: 192.168.137.228/190*/
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

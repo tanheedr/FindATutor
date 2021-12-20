@@ -39,14 +39,15 @@ public class AdapterClass extends RecyclerView.Adapter<AdapterClass.MyViewHolder
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int position) {
-        myViewHolder.firstName.setText(tutors.get(position).getFirstName());
-        myViewHolder.surname.setText(tutors.get(position).getSurname());
-        Glide.with(myViewHolder.itemView.getContext()).load(tutors.get(position).getPhoto()).into(myViewHolder.photo);
-        myViewHolder.subjects.setText(tutors.get(position).getSubjects());
-        myViewHolder.hourlyCost.setText(tutors.get(position).getHourlyCost());
-        myViewHolder.qualifications.setText(tutors.get(position).getQualifications());
-        myViewHolder.description.setText(tutors.get(position).getDescription());
+    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+        Tutor tutor = tutors.get(position);
+        holder.firstName.setText(tutor.getFirstName());
+        holder.surname.setText(tutor.getSurname());
+        Glide.with(holder.itemView.getContext()).load(tutor.getPhoto()).into(holder.photo);
+        holder.subjects.setText(tutor.getSubjects());
+        holder.hourlyCost.setText(tutor.getHourlyCost());
+        holder.qualifications.setText(tutor.getQualifications());
+        holder.description.setText(tutor.getDescription());
     }
 
     @Override
@@ -55,9 +56,11 @@ public class AdapterClass extends RecyclerView.Adapter<AdapterClass.MyViewHolder
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
+
         TextView firstName, surname, subjects, hourlyCost, qualifications, description;
         ImageView photo;
         Button message;
+
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             firstName = itemView.findViewById(R.id.tutorFirstName);
