@@ -10,7 +10,7 @@ session_start();
 $SenderID = 1;
 
 //Fix the query
-$query = "SELECT a.FirstName, a.Surname, a.Photo, m.Message, m.Timestamp FROM accounts a, messages m WHERE a.ID = m.ReceiverID AND m.Timestamp = (SELECT m2.Message FROM messages m2 WHERE m2.ReceiverID = a.ID ORDER BY Timestamp DESC LIMIT 1)";
+$query = "SELECT a.FirstName, a.Surname, a.Photo, m.Message, m.Timestamp FROM accounts a, messages m WHERE SenderID = '$SenderID' AND a.ID = m.ReceiverID AND m.Timestamp = (SELECT m2.Timestamp FROM messages m2 WHERE m2.ReceiverID = a.ID ORDER BY Timestamp DESC LIMIT 1)";
 $result = mysqli_query($connection, $query);
 $response = array();
 while($row = mysqli_fetch_assoc($result)){
