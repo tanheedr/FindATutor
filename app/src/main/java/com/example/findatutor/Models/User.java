@@ -1,4 +1,4 @@
-package com.example.findatutor;
+package com.example.findatutor.Models;
 
 import com.google.gson.annotations.SerializedName;
 

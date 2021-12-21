@@ -1,13 +1,9 @@
-package com.example.findatutor;
+package com.example.findatutor.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -16,10 +12,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.squareup.okhttp.FormEncodingBuilder;
+import com.example.findatutor.R;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
-import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
 import org.json.JSONArray;
@@ -27,8 +22,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 public class TutorMyAccountActivity extends AppCompatActivity {
 
@@ -39,9 +32,6 @@ public class TutorMyAccountActivity extends AppCompatActivity {
     private String strJson, apiUrl = "http://192.168.0.19/FindATutor/tutorData.php"; /*AT HOME: 192.168.0.19, AT SCHOOL 2ND PC: 192.168.137.228/190*/
     private OkHttpClient client;
     private Response response;
-
-    private RequestBody requestBody;
-
     private Request request;
     private ProgressDialog progressDialog;
 

@@ -1,10 +1,7 @@
-package com.example.findatutor;
+package com.example.findatutor.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,17 +13,18 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.findatutor.Activities.MessageActivity;
+import com.example.findatutor.R;
+import com.example.findatutor.Models.Tutor;
 
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 
-public class AdapterClass extends RecyclerView.Adapter<AdapterClass.MyViewHolder> {
+public class TutorsAdapter extends RecyclerView.Adapter<TutorsAdapter.MyViewHolder> {
 
     private List<Tutor> tutors;
     private Context context;
 
-    public AdapterClass(List<Tutor> tutors, Context context) {
+    public TutorsAdapter(List<Tutor> tutors, Context context) {
         this.tutors = tutors;
         this.context = context;
     }
@@ -55,7 +53,7 @@ public class AdapterClass extends RecyclerView.Adapter<AdapterClass.MyViewHolder
         return tutors.size();
     }
 
-    class MyViewHolder extends RecyclerView.ViewHolder {
+    public class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView firstName, surname, subjects, hourlyCost, qualifications, description;
         ImageView photo;
@@ -77,7 +75,6 @@ public class AdapterClass extends RecyclerView.Adapter<AdapterClass.MyViewHolder
                 public void onClick(View v) {
                     Intent intent = new Intent(context, MessageActivity.class);
                     context.startActivity(intent);
-
                 }
             });
 

@@ -1,4 +1,4 @@
-package com.example.findatutor;
+package com.example.findatutor.APIs;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

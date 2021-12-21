@@ -1,13 +1,10 @@
-package com.example.findatutor;
+package com.example.findatutor.Activities;
 
 import android.app.SearchManager;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -15,6 +12,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.findatutor.APIs.ApiClient;
+import com.example.findatutor.APIs.ApiInterface;
+import com.example.findatutor.Adapters.TutorsAdapter;
+import com.example.findatutor.R;
+import com.example.findatutor.Models.Tutor;
 
 import java.util.List;
 
@@ -27,7 +30,7 @@ public class SearchActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private List<Tutor> tutors;
-    private AdapterClass adapter;
+    private TutorsAdapter adapter;
     private ApiInterface apiInterface;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +53,7 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onResponse(@NonNull Call<List<Tutor>> call, @NonNull Response<List<Tutor>> response) {
                 tutors = response.body();
-                adapter = new AdapterClass(tutors, SearchActivity.this);
+                adapter = new TutorsAdapter(tutors, SearchActivity.this);
                 recyclerView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
             }
@@ -65,7 +68,7 @@ public class SearchActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu, menu);
+        inflater.inflate(R.menu.menu_search, menu);
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));

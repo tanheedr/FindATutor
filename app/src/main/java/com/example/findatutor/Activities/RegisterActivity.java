@@ -1,4 +1,4 @@
-package com.example.findatutor;
+package com.example.findatutor.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,9 +18,10 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.example.findatutor.R;
+import com.example.findatutor.Singleton.MySingleton;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
-import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map;
 

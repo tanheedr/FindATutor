@@ -1,4 +1,4 @@
-package com.example.findatutor;
+package com.example.findatutor.Activities;
 
 import android.os.Bundle;
 import android.view.Menu;
@@ -6,12 +6,16 @@ import android.view.MenuInflater;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
+import com.example.findatutor.APIs.ApiClient;
+import com.example.findatutor.APIs.ApiInterface;
+import com.example.findatutor.R;
+import com.example.findatutor.Models.User;
+import com.example.findatutor.Adapters.UsersAdapter;
+
 import java.util.List;
 
 import retrofit2.Call;
@@ -30,7 +34,7 @@ public class MessageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
 
-        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView = findViewById(R.id.messageRecyclerView);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);

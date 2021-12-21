@@ -1,4 +1,8 @@
-package com.example.findatutor;
+package com.example.findatutor.APIs;
+
+import com.example.findatutor.Models.Message;
+import com.example.findatutor.Models.Tutor;
+import com.example.findatutor.Models.User;
 
 import java.util.List;
 
@@ -11,7 +15,10 @@ public interface ApiInterface {
     @GET("getAllMessages.php")
     Call<List<User>> getUsers ();
 
-    @GET("getTutorData.php")
+    @GET("getTutors.php")
     Call<List<Tutor>> getTutors (@Query("subject") String subjectSearch);
+
+    @GET("getChat.php")
+    Call<List<Message>> getMessages();
 
 }

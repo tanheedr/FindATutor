@@ -1,11 +1,11 @@
-package com.example.findatutor;
+package com.example.findatutor.Adapters;
 
 import android.content.Context;
-import android.os.Binder;
-import android.renderscript.ScriptGroup;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,8 +13,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.findatutor.Activities.ChatActivity;
+import com.example.findatutor.Models.User;
+import com.example.findatutor.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHolder>{
@@ -53,14 +55,24 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHold
 
         ImageView photo;
         TextView firstName, surname, lastMessage, timestamp;
+        Button click;
 
         public UserViewHolder(@NonNull View itemView) {
             super(itemView);
-            photo = itemView.findViewById(R.id.chatPhoto);
-            firstName = itemView.findViewById(R.id.chatFirstName);
-            surname = itemView.findViewById(R.id.chatSurname);
-            lastMessage = itemView.findViewById(R.id.chatLastMessage);
-            timestamp = itemView.findViewById(R.id.chatTimestamp);
+            photo = itemView.findViewById(R.id.messagePhoto);
+            firstName = itemView.findViewById(R.id.messageFirstName);
+            surname = itemView.findViewById(R.id.messageSurname);
+            lastMessage = itemView.findViewById(R.id.messageLastMessage);
+            timestamp = itemView.findViewById(R.id.messageTimestamp);
+            click = itemView.findViewById(R.id.messageClick);
+
+            click.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, ChatActivity.class);
+                    context.startActivity(intent);
+                }
+            });
         }
     }
 

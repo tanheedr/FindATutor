@@ -1,4 +1,4 @@
-package com.example.findatutor;
+package com.example.findatutor.Singleton;
 
 import android.content.Context;
 
