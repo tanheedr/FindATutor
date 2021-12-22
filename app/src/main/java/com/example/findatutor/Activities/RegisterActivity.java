@@ -18,6 +18,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.example.findatutor.Models.Constants;
 import com.example.findatutor.R;
 import com.example.findatutor.Singleton.MySingleton;
 import com.rengwuxian.materialedittext.MaterialEditText;
@@ -47,9 +48,9 @@ public class RegisterActivity extends AppCompatActivity {
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String txtFirstName = firstName.getText().toString();
-                String txtSurname = surname.getText().toString();
-                String txtEmail = email.getText().toString();
+                String txtFirstName = firstName.getText().toString().trim();
+                String txtSurname = surname.getText().toString().trim();
+                String txtEmail = email.getText().toString().trim();
                 String txtPassword = password.getText().toString();
                 String txtConfirmPassword = confirmPassword.getText().toString();
                 if (TextUtils.isEmpty(txtFirstName) || TextUtils.isEmpty(txtSurname) || TextUtils.isEmpty(txtEmail) || TextUtils.isEmpty(txtPassword) || TextUtils.isEmpty(txtConfirmPassword)){
@@ -76,7 +77,7 @@ public class RegisterActivity extends AppCompatActivity {
         progressDialog.setIndeterminate(false);
         progressDialog.setTitle("Creating New Account");
         progressDialog.show();
-        String url = "http://192.168.0.19/FindATutor/register.php"; /*AT HOME: 192.168.0.19, AT SCHOOL 2ND PC: 192.168.137.228/190*/
+        String url = Constants.REGISTER_URL;
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

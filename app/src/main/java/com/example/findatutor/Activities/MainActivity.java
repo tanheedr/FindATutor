@@ -19,16 +19,21 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.example.findatutor.Models.Constants;
 import com.example.findatutor.Singleton.MySingleton;
 import com.example.findatutor.R;
+import com.example.findatutor.Singleton.SharedPreferenceManager;
 import com.rengwuxian.materialedittext.MaterialEditText;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /* package com.example.findatutor;
-Places where change IP address:
-MainActivity, RegisterActivity, TutorMyAccountActivity, EditTutorMyAccountActivity, ChatActivity, ApiClient
+Place where change IP address:
+Constants
 */
 
 public class MainActivity extends AppCompatActivity {
@@ -37,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     Button login, register;
     CheckBox remember;
     SharedPreferences sharedPreferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String txtEmail = email.getText().toString();
+                String txtEmail = email.getText().toString().trim();
                 String txtPassword = password.getText().toString();
                 if (TextUtils.isEmpty(txtEmail) || TextUtils.isEmpty(txtPassword)) {
                     Toast.makeText(MainActivity.this, "All fields required", Toast.LENGTH_SHORT).show();
@@ -84,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
         progressDialog.setIndeterminate(false);
         progressDialog.setTitle("Logging In");
         progressDialog.show();
-        String url = "http://192.168.0.19/FindATutor/login.php"; /*AT HOME: 192.168.0.19, AT SCHOOL 2ND PC: 192.168.137.228/190 "http://51.38.80.233/FindATutor/login.php" "http://10.0.2.2/FindATutor/login.php"*/
+        String url = Constants.LOGIN_URL;
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -92,6 +98,13 @@ public class MainActivity extends AppCompatActivity {
                     progressDialog.dismiss();
                     Toast.makeText(MainActivity.this, response, Toast.LENGTH_SHORT).show();
                     SharedPreferences.Editor editor = sharedPreferences.edit();
+                    JSONObject object;
+                    try {
+                        object = new JSONObject(response);
+                        SharedPreferenceManager.getmInstance(getApplicationContext()).UserID(object.getInt("ID"), object.getInt("AccountType"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                     if (remember.isChecked()){
                         editor.putString(getResources().getString(R.string.preferredLoginState), "Logged in");
                     }

@@ -22,6 +22,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.example.findatutor.Models.Constants;
 import com.example.findatutor.Singleton.MySingleton;
 import com.example.findatutor.R;
 import com.github.drjacky.imagepicker.ImagePicker;
@@ -113,7 +114,7 @@ public class EditTutorMyAccountActivity extends AppCompatActivity {
         progressDialog.setIndeterminate(false);
         progressDialog.setTitle("Updating Information");
         progressDialog.show();
-        String url = "http://192.168.0.19/FindATutor/editTutorData.php"; /*AT HOME: 192.168.0.19, AT SCHOOL 2ND PC: 192.168.137.228/190*/
+        String url = Constants.EDIT_TUTOR_PROFILE_URL;
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

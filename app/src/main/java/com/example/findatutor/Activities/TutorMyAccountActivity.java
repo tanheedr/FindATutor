@@ -2,26 +2,35 @@ package com.example.findatutor.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.bumptech.glide.Glide;
+import com.example.findatutor.Models.Constants;
 import com.example.findatutor.R;
+import com.example.findatutor.Singleton.MySingleton;
+import com.example.findatutor.Singleton.SharedPreferenceManager;
 import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TutorMyAccountActivity extends AppCompatActivity {
 
@@ -29,10 +38,8 @@ public class TutorMyAccountActivity extends AppCompatActivity {
     TextView textSubjects, textHourlyCost, textQualifications, textDescription;
     Button edit;
 
-    private String strJson, apiUrl = "http://192.168.0.19/FindATutor/tutorData.php"; /*AT HOME: 192.168.0.19, AT SCHOOL 2ND PC: 192.168.137.228/190*/
     private OkHttpClient client;
     private Response response;
-    private Request request;
     private ProgressDialog progressDialog;
 
     @Override
@@ -42,12 +49,7 @@ public class TutorMyAccountActivity extends AppCompatActivity {
 
         edit = findViewById(R.id.editTutorAccount);
 
-        edit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(TutorMyAccountActivity.this, EditTutorMyAccountActivity.class));
-            }
-        });
+        edit.setOnClickListener(v -> startActivity(new Intent(TutorMyAccountActivity.this, EditTutorMyAccountActivity.class)));
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Please Wait");
@@ -65,11 +67,42 @@ public class TutorMyAccountActivity extends AppCompatActivity {
 
     }
 
+    @SuppressLint("StaticFieldLeak")
     public class GetUserDataRequest extends AsyncTask<Void, Void, Void>{
+
+        String url = Constants.TUTOR_PROFILE_URL;
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                //@Todo do something
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(TutorMyAccountActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
+            }
+        }){
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> param = new HashMap<>();
+                param.put("ID", SharedPreferenceManager.getmInstance(getApplicationContext()).getID());
+                return param;
+            }
+        };
 
         @Override
         protected Void doInBackground(Void... voids) {
-            request = new Request.Builder().url(apiUrl).build();
+            return null;
+        }
+
+        /*@Override
+        protected Void doInBackground(Void... voids) {
+            try {
+                getParams();
+            } catch (AuthFailureError authFailureError) {
+                authFailureError.printStackTrace();
+            }
+            String apiUrl = Constants.TUTOR_PROFILE_URL;
+            Request request = new Request.Builder().url(apiUrl).build();
             try{
                 response = client.newCall(request).execute();
             } catch (IOException e) {
@@ -82,12 +115,12 @@ public class TutorMyAccountActivity extends AppCompatActivity {
         protected void onPostExecute(Void unused) {
             super.onPostExecute(unused);
             try {
-                strJson = response.body().string();
+                String strJson = response.body().string();
                 presentUserData(strJson);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
+        }*/
     }
 
     private void presentUserData(String strJson){

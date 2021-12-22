@@ -1,5 +1,6 @@
 package com.example.findatutor.APIs;
 
+import com.example.findatutor.Models.Constants;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -8,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
 
-    public static final String BASE_URL = "http://192.168.0.19/FindATutor/"; /*AT HOME: 192.168.0.19, AT SCHOOL 2ND PC: 192.168.137.228/190*/
+    public static final String BASE_URL = Constants.BASE_URL;
     public static Retrofit retrofit;
 
     public static Gson gson = new GsonBuilder()

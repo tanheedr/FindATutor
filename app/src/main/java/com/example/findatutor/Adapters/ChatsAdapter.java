@@ -44,9 +44,8 @@ public class ChatsAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(int position) {
-        Message message = messages.get(position);
-        Log.d("hello", message.getSenderID());
-        if(message.getSenderID().equals(String.valueOf(1))){
+        //Message message = messages.get(position);
+        if(1 == 1){
             return ITEM_SENT;
         }else{
             return ITEM_RECEIVED;
