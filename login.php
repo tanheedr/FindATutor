@@ -1,6 +1,26 @@
 <?php
 
-require "connection.php";
+require_once "operations.php";
+
+$response = array();
+
+if($_SERVER["REQUEST_METHOD"] == "POST"){
+    $db = new Operations();
+    if($db -> loginUser($_POST["Email"], $_POST["Password"])){
+        $user = $db -> getUserData($_POST["Email"]);
+        $response["ID"] = $user["ID"];
+        $response["AccountType"] = $user["AccountType"];
+        $response["Message"] = "Login Successful";
+    }else{
+        $response["Message"] = "Invalid details";
+    }
+}else{
+    $response["Message"] = "Invalid request";
+}
+
+echo substr(json_encode($response["Message"]), 1, -1);
+
+/*require "connection.php";
 
 session_start();
 
@@ -23,11 +43,11 @@ if($connection){
                 $sqlGetID = "SELECT ID FROM accounts WHERE Email LIKE '$email'";
                 $res = mysqli_query($connection, $sqlGetID);
                 $_SESSION['ID'] = mysqli_fetch_row($res);
-                /*$json_data = array();
+                //$json_data = array();
 
-                while($row = mysqli_fetch_assoc($res)){
-                    $json_data[] = $row;
-                }*/
+                //while($row = mysqli_fetch_assoc($res)){
+                //    $json_data[] = $row;
+                //}
                 echo "Login Successful";
             }
             else{
@@ -41,6 +61,6 @@ if($connection){
 }
 else{
     echo "Connection Error";
-}
+}*/
 
 ?>
