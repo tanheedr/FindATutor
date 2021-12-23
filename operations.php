@@ -50,6 +50,14 @@ class Operations{
         }
     }
 
+    private function doesUserExist($email){
+        $statement = $this -> connection -> prepare("SELECT ID FROM accounts WHERE email = ?");
+        $statement -> bind_param("s", $email);
+        $statement -> execute();
+        $statement -> store_result();
+        return $statement -> num_rows > 0;
+    }
+
     public function loginUser($email, $password){
         $hashedPassword = hash('sha1', $password);
         $statement = $this -> connection -> prepare("SELECT ID FROM accounts WHERE Email = ? AND Password = ?");
@@ -66,12 +74,66 @@ class Operations{
         return $statement -> get_result() -> fetch_assoc();
     }
 
-    private function doesUserExist($email){
-        $statement = $this -> connection -> prepare("SELECT ID FROM accounts WHERE email = ?");
-        $statement -> bind_param("s", $email);
+
+    public function getTutorData($ID){
+        $statement = $this -> connection -> prepare("SELECT Photo, Subjects, HourlyCost, Qualifications, Description FROM accounts, tutordescription WHERE TutorID = ? AND TutorID = ID");
+        $statement -> bind_param("i", $ID);
         $statement -> execute();
-        $statement -> store_result();
-        return $statement -> num_rows > 0;
+        return $statement -> get_result() -> fetch_assoc();
+    }
+
+    public function editTutorData($ID, $photo, $subjects, $hourlyCost, $qualifications, $description){
+        if(preg_match("/^[0-9]+(?:\.[0-9]{1,2})?$/", $hourlyCost) !== 1){
+            echo "Not a valid price";
+        }else{
+            $statement = $this -> connection -> prepare("UPDATE accounts, tutordescription SET Photo = ?, Subjects = ?, HourlyCost = ?, Qualifications = ?, Description = ? WHERE TutorID = ? AND TutorID = ID");
+            $statement -> bind_param("ssissi", $photo, $subjects, $hourlyCost, $qualifications, $description, $ID);
+            if($statement -> execute()){
+                echo "Successfully Updated";
+            }else{
+                echo "Update Error";
+            }
+        }
+    }
+
+    public function getParentData($ID){
+        $statement = $this -> connection -> prepare("SELECT Photo, FirstName, Surname FROM accounts WHERE ID = ?");
+        $statement -> bind_param("i", $ID);
+        $statement -> execute();
+        return $statement -> get_result() -> fetch_assoc();
+    }
+
+    public function editParentData($ID, $photo){
+        $statement = $this -> connection -> prepare("UPDATE accounts SET Photo = ? WHERE ID = ?");
+        $statement -> bind_param("si", $photo, $ID);
+        if($statement -> execute()){
+            echo "Successfully Updated";
+        }else{
+            echo "Update Error";
+        }
+    }
+
+    public function getTutorsWithSearch($subject){
+        $statement = $this -> connection -> prepare("SELECT FirstName, Surname, Photo, Subjects, HourlyCost, Qualifications, Description FROM accounts, tutordescription WHERE Subjects LIKE CONCAT('%', ?, '%') AND TutorID = ID");
+        $statement -> bind_param("s", $subject);
+        $statement -> execute();
+        $result = $statement -> get_result();
+        $tutors = array();
+        while($row = $result -> fetch_array(MYSQLI_NUM)){
+            array_push($tutors, $row);
+        }
+        return $tutors;
+    }
+
+    public function getTutorsWithoutSearch(){
+        $statement = $this -> connection -> prepare("SELECT FirstName, Surname, Photo, Subjects, HourlyCost, Qualifications, Description FROM accounts, tutordescription WHERE TutorID = ID");
+        $statement -> execute();
+        $result = $statement -> get_result();
+        $tutors = array();
+        while($row = $result -> fetch_assoc()){
+            array_push($tutors, $row);
+        }
+        return $tutors;
     }
 
 }
