@@ -25,58 +25,52 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class TutorMyAccountActivity extends AppCompatActivity {
+public class ParentMyAccountActivity extends AppCompatActivity {
 
-    ImageView textProfilePic;
-    TextView textSubjects, textHourlyCost, textQualifications, textDescription;
+    ImageView photo;
+    TextView firstName, surname;
     Button edit;
 
     private ProgressDialog progressDialog;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tutor_my_account);
+        setContentView(R.layout.activity_parent_my_account);
 
-        textProfilePic = findViewById(R.id.textProfilePic);
-        textSubjects = findViewById(R.id.textSubjects);
-        textHourlyCost = findViewById(R.id.textHourlyCost);
-        textQualifications = findViewById(R.id.textQualifications);
-        textDescription = findViewById(R.id.textDescription);
-        edit = findViewById(R.id.editTutorAccount);
-        edit.setOnClickListener(v -> startActivity(new Intent(TutorMyAccountActivity.this, EditTutorMyAccountActivity.class)));
+        photo = findViewById(R.id.parentProfilePic);
+        firstName = findViewById(R.id.parentFirstName);
+        surname = findViewById(R.id.parentSurname);
+        edit = findViewById(R.id.editParentAccount);
+        edit.setOnClickListener(v -> startActivity(new Intent(ParentMyAccountActivity.this, EditParentMyAccountActivity.class)));
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Please Wait");
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
-        GetTutorDataRequest();
-
+        GetParentDataRequest();
     }
 
     @SuppressLint("StaticFieldLeak")
-    public void GetTutorDataRequest() {
-        String url = Constants.TUTOR_PROFILE_URL;
+    public void GetParentDataRequest() {
+        String url = Constants.PARENT_PROFILE_URL;
         StringRequest request = new StringRequest(Request.Method.POST, url, response -> {
             try {
                 JSONObject object = new JSONObject(response);
                 String imgUrl = object.getString("Photo");
-                String stringSubjects = object.getString("Subjects");
-                String stringHourlyCost = object.getString("HourlyCost");
-                String stringQualifications = object.getString("Qualifications");
-                String stringDescription = object.getString("Description");
-                Glide.with(TutorMyAccountActivity.this).load(imgUrl).into(textProfilePic);
+                String stringFirstName = object.getString("FirstName");
+                String stringSurname = object.getString("Surname");
+                Glide.with(ParentMyAccountActivity.this).load(imgUrl).into(photo);
 
-                textSubjects.setText(stringSubjects);
-                textHourlyCost.setText(stringHourlyCost);
-                textQualifications.setText(stringQualifications);
-                textDescription.setText(stringDescription);
+                firstName.setText(stringFirstName);
+                surname.setText(stringSurname);
                 progressDialog.hide();
 
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        }, error -> Toast.makeText(TutorMyAccountActivity.this, error.toString(), Toast.LENGTH_SHORT).show()) {
+        }, error -> Toast.makeText(ParentMyAccountActivity.this, error.toString(), Toast.LENGTH_SHORT).show()) {
 
             protected Map<String, String> getParams() {
                 Map<String, String> param = new HashMap<>();
@@ -85,6 +79,6 @@ public class TutorMyAccountActivity extends AppCompatActivity {
             }
         };
 
-        MySingleton.getmInstance(TutorMyAccountActivity.this).addToRequestQueue(request);
+        MySingleton.getmInstance(ParentMyAccountActivity.this).addToRequestQueue(request);
     }
 }

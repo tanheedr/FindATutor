@@ -1,4 +1,4 @@
-package com.example.findatutor.APIs;
+package com.example.findatutor.Networking;
 
 import com.example.findatutor.Models.Message;
 import com.example.findatutor.Models.Tutor;
@@ -16,7 +16,7 @@ public interface ApiInterface {
     Call<List<User>> getUsers ();
 
     @GET("getTutors.php")
-    Call<List<Tutor>> getTutors (@Query("subject") String subjectSearch);
+    Call<List<Tutor>> getTutors (@Query("Subjects") String subjectSearch);
 
     @GET("getChat.php")
     Call<List<Message>> getMessages();

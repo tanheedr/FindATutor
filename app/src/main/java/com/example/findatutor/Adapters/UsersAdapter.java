@@ -21,8 +21,8 @@ import java.util.List;
 
 public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHolder>{
 
-    private List<User> users;
-    private Context context;
+    private final List<User> users;
+    private final Context context;
 
     public UsersAdapter(List<User> users, Context context) {
         this.users = users;
@@ -66,13 +66,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHold
             timestamp = itemView.findViewById(R.id.messageTimestamp);
             click = itemView.findViewById(R.id.messageClick);
 
-            click.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(context, ChatActivity.class);
-                    context.startActivity(intent);
-                }
-            });
+            click.setOnClickListener(v -> context.startActivity(new Intent(context, ChatActivity.class)) );
         }
     }
 

@@ -53,12 +53,7 @@ public class EditTutorMyAccountActivity extends AppCompatActivity {
         upload = findViewById(R.id.editUpload);
         save = findViewById(R.id.SaveTutorAccount);
 
-        upload.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ImagePicker.Companion.with(EditTutorMyAccountActivity.this).crop().cropSquare().compress(1024).maxResultSize(1080, 1080).start();
-            }
-        });
+        upload.setOnClickListener(v -> ImagePicker.Companion.with(EditTutorMyAccountActivity.this).crop().cropSquare().compress(1024).maxResultSize(1080, 1080).start());
 
         save.setOnClickListener(new View.OnClickListener() {
             @Override

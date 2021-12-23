@@ -21,8 +21,8 @@ import java.util.List;
 
 public class TutorsAdapter extends RecyclerView.Adapter<TutorsAdapter.MyViewHolder> {
 
-    private List<Tutor> tutors;
-    private Context context;
+    private final List<Tutor> tutors;
+    private final Context context;
 
     public TutorsAdapter(List<Tutor> tutors, Context context) {
         this.tutors = tutors;
@@ -70,13 +70,7 @@ public class TutorsAdapter extends RecyclerView.Adapter<TutorsAdapter.MyViewHold
             description = itemView.findViewById(R.id.tutorDescription);
             message = itemView.findViewById(R.id.tutorMessage);
 
-            message.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(context, MessageActivity.class);
-                    context.startActivity(intent);
-                }
-            });
+            message.setOnClickListener(v -> context.startActivity(new Intent(context, MessageActivity.class)));
 
         }
     }

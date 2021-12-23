@@ -1,4 +1,4 @@
-package com.example.findatutor.APIs;
+package com.example.findatutor.Networking;
 
 import com.example.findatutor.Models.Constants;
 import com.google.gson.Gson;
@@ -20,6 +20,7 @@ public class ApiClient {
         if(retrofit == null){
             retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
+                    .addConverterFactory(new NullOnEmptyConverterFactory())
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .build();
         }

@@ -13,8 +13,8 @@ import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.findatutor.APIs.ApiClient;
-import com.example.findatutor.APIs.ApiInterface;
+import com.example.findatutor.Networking.ApiClient;
+import com.example.findatutor.Networking.ApiInterface;
 import com.example.findatutor.Adapters.TutorsAdapter;
 import com.example.findatutor.R;
 import com.example.findatutor.Models.Tutor;

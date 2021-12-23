@@ -21,8 +21,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FindATutor">
+        <activity android:name=".Activities.EditParentMyAccountActivity"></activity>
+        <activity android:name=".Activities.ParentMyAccountActivity" />
         <activity android:name=".Activities.EditTutorMyAccountActivity" />
-        <activity android:name=".Activities.TutorMyAccountActivity" /> <!-- tools:replace="android:appComponentFactory" -->
+        <activity android:name=".Activities.TutorMyAccountActivity" />
         <activity android:name=".Activities.HomepageActivity" />
         <activity android:name=".Activities.RegisterActivity" />
         <activity android:name=".Activities.SearchActivity" />

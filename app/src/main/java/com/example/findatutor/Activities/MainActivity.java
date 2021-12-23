@@ -56,24 +56,18 @@ public class MainActivity extends AppCompatActivity {
         login = findViewById(R.id.login);
         register = findViewById(R.id.register);
 
-        register.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, RegisterActivity.class));
-                finish();
-            }
+        register.setOnClickListener(v -> {
+            startActivity(new Intent(MainActivity.this, RegisterActivity.class));
+            finish();
         });
 
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String txtEmail = email.getText().toString().trim();
-                String txtPassword = password.getText().toString();
-                if (TextUtils.isEmpty(txtEmail) || TextUtils.isEmpty(txtPassword)) {
-                    Toast.makeText(MainActivity.this, "All fields required", Toast.LENGTH_SHORT).show();
-                } else {
-                    login(txtEmail, txtPassword);
-                }
+        login.setOnClickListener(v -> {
+            String txtEmail = email.getText().toString().trim();
+            String txtPassword = password.getText().toString();
+            if (TextUtils.isEmpty(txtEmail) || TextUtils.isEmpty(txtPassword)) {
+                Toast.makeText(MainActivity.this, "All fields required", Toast.LENGTH_SHORT).show();
+            } else {
+                login(txtEmail, txtPassword);
             }
         });
 
@@ -94,14 +88,13 @@ public class MainActivity extends AppCompatActivity {
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                if (response.equals("Login Successful")){
+                if (response.contains("Login Successful")){
                     progressDialog.dismiss();
-                    Toast.makeText(MainActivity.this, response, Toast.LENGTH_SHORT).show();
                     SharedPreferences.Editor editor = sharedPreferences.edit();
-                    JSONObject object;
                     try {
-                        object = new JSONObject(response);
-                        SharedPreferenceManager.getmInstance(getApplicationContext()).UserID(object.getInt("ID"), object.getInt("AccountType"));
+                        JSONObject object = new JSONObject(response);
+                        SharedPreferenceManager.getmInstance(getApplicationContext()).UserLogin(object.getInt("ID"), object.getInt("AccountType"));
+                        //Toast.makeText(MainActivity.this, SharedPreferenceManager.getID(), Toast.LENGTH_SHORT).show();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

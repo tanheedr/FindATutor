@@ -6,7 +6,7 @@ import android.content.SharedPreferences;
 public class SharedPreferenceManager {
 
     private static SharedPreferenceManager mInstance;
-    private Context mCtx;
+    private static Context mCtx;
     private static final String SHARED_PREFERENCE_NAME = "sharedPref";
     private static final String KEY_ID = "ID";
     private static final String KEY_ACCOUNT_TYPE = "AccountType";
@@ -22,7 +22,7 @@ public class SharedPreferenceManager {
         return mInstance;
     }
 
-    public boolean UserID(int id, int accountType){
+    public boolean UserLogin(int id, int accountType){
         SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt(KEY_ID, id);
@@ -31,12 +31,12 @@ public class SharedPreferenceManager {
         return true;
     }
 
-    public String getID(){
+    public static String getID(){
         SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE);
         return String.valueOf(sharedPreferences.getInt(KEY_ID, 0));
     }
 
-    public String getAccountType(){
+    public static String getAccountType(){
         SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE);
         return String.valueOf(sharedPreferences.getInt(KEY_ACCOUNT_TYPE, 0));
     }

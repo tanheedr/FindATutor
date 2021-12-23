@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.findatutor.R;
+import com.example.findatutor.Singleton.SharedPreferenceManager;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 public class HomepageActivity extends AppCompatActivity {
@@ -26,36 +27,24 @@ public class HomepageActivity extends AppCompatActivity {
         logout = findViewById(R.id.logout);
         search = findViewById(R.id.search);
 
-        search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(HomepageActivity.this, SearchActivity.class));
-            }
-        });
+        search.setOnClickListener(v -> startActivity(new Intent(HomepageActivity.this, SearchActivity.class)));
 
-        myAccount.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        myAccount.setOnClickListener(v -> {
+            if(SharedPreferenceManager.getAccountType().equals(String.valueOf('2'))) {
                 startActivity(new Intent(HomepageActivity.this, TutorMyAccountActivity.class));
+            }else{
+                startActivity(new Intent(HomepageActivity.this, ParentMyAccountActivity.class));
             }
         });
 
-        messages.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(HomepageActivity.this, MessageActivity.class));
-            }
-        });
+        messages.setOnClickListener(v -> startActivity(new Intent(HomepageActivity.this, MessageActivity.class)));
 
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString(getResources().getString(R.string.preferredLoginState), "Logged Out");
-                editor.apply();
-                startActivity(new Intent(HomepageActivity.this, MainActivity.class));
-                finish();
-            }
+        logout.setOnClickListener(v -> {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString(getResources().getString(R.string.preferredLoginState), "Logged Out");
+            editor.apply();
+            startActivity(new Intent(HomepageActivity.this, MainActivity.class));
+            finish();
         });
 
     }
