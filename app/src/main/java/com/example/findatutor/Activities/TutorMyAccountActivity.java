@@ -50,6 +50,7 @@ public class TutorMyAccountActivity extends AppCompatActivity {
         progressDialog.setTitle("Please Wait");
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
+
         GetTutorDataRequest();
 
     }

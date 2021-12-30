@@ -2,7 +2,6 @@ package com.example.findatutor.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -52,7 +51,6 @@ public class ParentMyAccountActivity extends AppCompatActivity {
         GetParentDataRequest();
     }
 
-    @SuppressLint("StaticFieldLeak")
     public void GetParentDataRequest() {
         String url = Constants.PARENT_PROFILE_URL;
         StringRequest request = new StringRequest(Request.Method.POST, url, response -> {

@@ -9,7 +9,7 @@ session_start();
 $SenderID = 1;
 $ReceiverID = 3;
 
-$query = "SELECT Message, Timestamp FROM messages WHERE (SenderID = '$SenderID' AND ReceiverID = '$ReceiverID') OR (SenderID = '$ReceiverID' AND ReceiverID = '$SenderID')";
+$query = "SELECT Message, Timestamp FROM chats WHERE (SenderID = '$SenderID' AND ReceiverID = '$ReceiverID') OR (SenderID = '$ReceiverID' AND ReceiverID = '$SenderID')";
 $res = mysqli_query($connection, $query);
 $json_data = array();
 

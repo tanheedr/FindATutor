@@ -1,34 +1,33 @@
 package com.example.findatutor.Adapters;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.findatutor.Models.Message;
-import com.example.findatutor.Models.Tutor;
+import com.example.findatutor.Models.Chat;
 import com.example.findatutor.R;
+import com.example.findatutor.Singleton.SharedPreferenceManager;
+import com.example.findatutor.databinding.AppearReceivedBinding;
+import com.example.findatutor.databinding.AppearSentBinding;
 
 import java.util.List;
 
 public class ChatsAdapter extends RecyclerView.Adapter {
 
-    private List<Message> messages;
-    private Context context;
-
-    public ChatsAdapter(List<Message> messages, Context context) {
-        this.messages = messages;
-        this.context = context;
-    }
-
+    private final List<Chat> chats;
+    private final Context context;
     final int ITEM_SENT = 1;
     final int ITEM_RECEIVED = 2;
+
+    public ChatsAdapter(List<Chat> chats, Context context) {
+        this.chats = chats;
+        this.context = context;
+    }
 
     @NonNull
     @Override
@@ -44,8 +43,8 @@ public class ChatsAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(int position) {
-        //Message message = messages.get(position);
-        if(1 == 1){
+        Chat chat = chats.get(position);
+        if(chat.getSenderID().equals(SharedPreferenceManager.getID())){
             return ITEM_SENT;
         }else{
             return ITEM_RECEIVED;
@@ -54,38 +53,36 @@ public class ChatsAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        Message message = messages.get(position);
+        Chat chat = chats.get(position);
         if(holder.getClass() == SentViewHolder.class){
             SentViewHolder viewHolder = (SentViewHolder)holder;
-            viewHolder.sent.setText(message.getMessage());
+            viewHolder.binding.appearSent.setText(chat.getMessage());
+            viewHolder.binding.appearSentTimestamp.setText(chat.getTimestamp());
         }else{
             ReceivedViewHolder viewHolder = (ReceivedViewHolder)holder;
-            viewHolder.received.setText(message.getMessage());
+            viewHolder.binding.appearReceived.setText(chat.getMessage());
+            viewHolder.binding.appearReceivedTimestamp.setText(chat.getTimestamp());
         }
     }
 
     @Override
     public int getItemCount() {
-        return messages.size();
+        return chats.size();
     }
 
-    public class SentViewHolder extends RecyclerView.ViewHolder{
-
-        TextView sent;
-
+    public static class SentViewHolder extends RecyclerView.ViewHolder{
+        AppearSentBinding binding;
         public SentViewHolder(@NonNull View itemView) {
             super(itemView);
-            sent = itemView.findViewById(R.id.appearSent);
+            binding = AppearSentBinding.bind(itemView);
         }
     }
 
-    public class ReceivedViewHolder extends RecyclerView.ViewHolder{
-
-        TextView received;
-
+    public static class ReceivedViewHolder extends RecyclerView.ViewHolder{
+        AppearReceivedBinding binding;
         public ReceivedViewHolder(@NonNull View itemView) {
             super(itemView);
-            received = itemView.findViewById(R.id.appearReceived);
+            binding = AppearReceivedBinding.bind(itemView);
         }
     }
 

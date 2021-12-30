@@ -15,6 +15,7 @@ import com.example.findatutor.Networking.ApiInterface;
 import com.example.findatutor.R;
 import com.example.findatutor.Models.User;
 import com.example.findatutor.Adapters.UsersAdapter;
+import com.example.findatutor.Singleton.SharedPreferenceManager;
 
 import java.util.List;
 
@@ -25,17 +26,15 @@ import retrofit2.Response;
 public class MessageActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private RecyclerView.LayoutManager layoutManager;
     private List<User> users;
     private UsersAdapter adapter;
-    private ApiInterface apiInterface;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
 
         recyclerView = findViewById(R.id.messageRecyclerView);
-        layoutManager = new LinearLayoutManager(this);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
 
@@ -44,8 +43,8 @@ public class MessageActivity extends AppCompatActivity {
     }
 
     public void displayMessages(){
-        apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
-        Call<List<User>> call = apiInterface.getUsers();
+        ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
+        Call<List<User>> call = apiInterface.getUsers(SharedPreferenceManager.getID());
         call.enqueue(new Callback<List<User>>() {
             @Override
             public void onResponse(@NonNull Call<List<User>> call, @NonNull Response<List<User>> response) {

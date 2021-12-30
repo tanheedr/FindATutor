@@ -18,6 +18,7 @@ import com.example.findatutor.Networking.ApiInterface;
 import com.example.findatutor.Adapters.TutorsAdapter;
 import com.example.findatutor.R;
 import com.example.findatutor.Models.Tutor;
+import com.example.findatutor.Singleton.SharedPreferenceManager;
 
 import java.util.List;
 
@@ -28,17 +29,15 @@ import retrofit2.Response;
 public class SearchActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private RecyclerView.LayoutManager layoutManager;
     private List<Tutor> tutors;
     private TutorsAdapter adapter;
-    private ApiInterface apiInterface;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
         recyclerView = findViewById(R.id.recyclerView);
-        layoutManager = new LinearLayoutManager(this);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
 
@@ -47,8 +46,8 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     public void fetchTutors(String subjectSearch){
-        apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
-        Call<List<Tutor>> call = apiInterface.getTutors(subjectSearch);
+        ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
+        Call<List<Tutor>> call = apiInterface.getTutors(SharedPreferenceManager.getID(), subjectSearch);
         call.enqueue(new Callback<List<Tutor>>() {
             @Override
             public void onResponse(@NonNull Call<List<Tutor>> call, @NonNull Response<List<Tutor>> response) {
@@ -73,6 +72,7 @@ public class SearchActivity extends AppCompatActivity {
         SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setIconifiedByDefault(false);
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {

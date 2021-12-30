@@ -12,8 +12,7 @@
         android:layout_height="60dp"
         app:layout_constraintBottom_toTopOf="@+id/chatRecyclerView"
         android:id="@+id/chatBarCardView"
-        app:cardBackgroundColor="@color/colorPrimaryDark"
-        app:cardElevation="50dp">
+        app:cardBackgroundColor="@color/colorPrimaryDark">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -32,7 +31,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/chatFirstName"
-                android:hint="FirstName"
+                android:text="FirstName"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:textColor="@color/white"
@@ -43,11 +42,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/chatSurname"
-                android:hint="Surname"
+                android:text="Surname"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:textColor="@color/white"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="5dp"
                 android:layout_marginTop="15dp"/>
 
         </LinearLayout>
@@ -95,9 +94,10 @@
 
     </androidx.cardview.widget.CardView>
 
-    <ImageView
+    <ImageButton
         android:layout_width="50dp"
         android:layout_height="50dp"
+        android:id="@+id/chatSend"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginEnd="5dp"
@@ -106,15 +106,5 @@
         android:background="@drawable/circle_colorprimarydark"
         app:tint="@color/white"
         android:padding="12sp"/>
-
-    <Button
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:id="@+id/chatSend"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="10dp"
-        android:background="@android:color/transparent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

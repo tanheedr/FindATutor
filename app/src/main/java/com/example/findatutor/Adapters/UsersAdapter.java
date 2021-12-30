@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide;
 import com.example.findatutor.Activities.ChatActivity;
 import com.example.findatutor.Models.User;
 import com.example.findatutor.R;
+import com.example.findatutor.Singleton.SharedPreferenceManager;
 
 import java.util.List;
 
@@ -39,6 +40,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHold
     @Override
     public void onBindViewHolder(@NonNull UserViewHolder holder, int position) {
         User user = users.get(position);
+        holder.recipientID = Integer.valueOf(user.getRecipientID());
         Glide.with(holder.itemView.getContext()).load(user.getPhoto()).into(holder.photo);
         holder.firstName.setText(user.getFirstName());
         holder.surname.setText(user.getSurname());
@@ -56,6 +58,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHold
         ImageView photo;
         TextView firstName, surname, lastMessage, timestamp;
         Button click;
+        Integer recipientID;
 
         public UserViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -66,7 +69,10 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHold
             timestamp = itemView.findViewById(R.id.messageTimestamp);
             click = itemView.findViewById(R.id.messageClick);
 
-            click.setOnClickListener(v -> context.startActivity(new Intent(context, ChatActivity.class)) );
+            click.setOnClickListener(v -> {
+                SharedPreferenceManager.getmInstance(context.getApplicationContext()).MessageUser(recipientID);
+                context.startActivity(new Intent(context, ChatActivity.class));
+            });
         }
     }
 

@@ -1,44 +1,47 @@
 package com.example.findatutor.Activities;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.example.findatutor.Models.Constants;
+import com.example.findatutor.Networking.FileUtils;
 import com.example.findatutor.Singleton.MySingleton;
 import com.example.findatutor.R;
-import com.github.drjacky.imagepicker.ImagePicker;
+import com.example.findatutor.Singleton.SharedPreferenceManager;
 import com.rengwuxian.materialedittext.MaterialEditText;
+import com.squareup.picasso.Picasso;
 
-import java.io.IOException;
-import java.net.URI;
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class EditTutorMyAccountActivity extends AppCompatActivity {
 
     ImageView editProfilePic;
     MaterialEditText editSubjects, editHourlyCost, editQualifications, editDescription;
     Button upload, save;
-    URI uri;
+    CharSequence[] options = {"Gallery", "Cancel"};
+    String selectedImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,23 +56,34 @@ public class EditTutorMyAccountActivity extends AppCompatActivity {
         upload = findViewById(R.id.editUpload);
         save = findViewById(R.id.SaveTutorAccount);
 
-        upload.setOnClickListener(v -> ImagePicker.Companion.with(EditTutorMyAccountActivity.this).crop().cropSquare().compress(1024).maxResultSize(1080, 1080).start());
+        requirePermission();
 
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("TAG", editProfilePic.toString());
-                String newPhoto = editProfilePic.toString();
-                String newSubjects = editSubjects.getText().toString();
-                String newHourlyCost = editHourlyCost.getText().toString();
-                String newQualifications = editQualifications.getText().toString();
-                String newDescription = editDescription.getText().toString();
-                if (TextUtils.isEmpty(newSubjects) || TextUtils.isEmpty(newHourlyCost) || TextUtils.isEmpty(newQualifications) || TextUtils.isEmpty(newDescription)){
-                    Toast.makeText(EditTutorMyAccountActivity.this, "All fields required", Toast.LENGTH_SHORT).show();
+        upload.setOnClickListener(v -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(EditTutorMyAccountActivity.this);
+            builder.setTitle("Select Image");
+            builder.setItems(options, (dialog, which) -> {
+                if(options[which].equals("Gallery")){
+                    Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(gallery, 1);
+                }else{
+                    dialog.dismiss();
                 }
-                else{
-                    updateUserData(newPhoto, newSubjects, newHourlyCost, newQualifications, newDescription);
-                }
+            });
+            builder.show();
+        });
+
+        save.setOnClickListener(v -> {
+            String newSubjects = Objects.requireNonNull(editSubjects.getText()).toString();
+            String newHourlyCost = Objects.requireNonNull(editHourlyCost.getText()).toString();
+            String newQualifications = Objects.requireNonNull(editQualifications.getText()).toString();
+            String newDescription = Objects.requireNonNull(editDescription.getText()).toString();
+
+            if (TextUtils.isEmpty(newSubjects) || TextUtils.isEmpty(newHourlyCost) || TextUtils.isEmpty(newQualifications) || TextUtils.isEmpty(newDescription)){
+                Toast.makeText(EditTutorMyAccountActivity.this, "All fields required", Toast.LENGTH_SHORT).show();
+            }
+            else{
+                File newPhoto = new File(Uri.parse(selectedImage).getPath());
+                updateUserData(newPhoto.toString(), newSubjects, newHourlyCost, newQualifications, newDescription);
             }
         });
 
@@ -78,29 +92,32 @@ public class EditTutorMyAccountActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        Uri uri = data.getData();
-        Log.d("TAG 2", uri.toString());
-        //URL url = uri.toURL();
-        Bitmap bitmap = null;
-        try {
-            bitmap = MediaStore.Images.Media.
-                    getBitmap(this.getContentResolver(), uri);
-        } catch (IOException e) {
-            e.printStackTrace();
+        if(resultCode != RESULT_CANCELED){
+            switch(requestCode){
+                case 0:
+                    if(resultCode == RESULT_OK && data != null){
+                        Bitmap image = (Bitmap) data.getExtras().get("Data");
+                        selectedImage = FileUtils.getPath(EditTutorMyAccountActivity.this, getImageUri(EditTutorMyAccountActivity.this, image));
+                        editProfilePic.setImageBitmap(image);
+                    }
+                    break;
+                case 1:
+                    if(resultCode == RESULT_OK && data != null){
+                        Uri image = data.getData();
+                        selectedImage = FileUtils.getPath(EditTutorMyAccountActivity.this, image);
+                        Picasso.get().load(image).into(editProfilePic);
+                    }
+            }
         }
-        editProfilePic.setImageBitmap(bitmap);
+    }
 
-        /*if (requestCode == CropImage.CROP){         //////////////////////////DO
-            CropImageView.Ac
-            assert data != null;
-            Uri uri = data.getData();
-            editProfilePic.setImageURI(uri);
-        }else{
-            assert data != null;
-            Uri uri = data.getData();
-            editProfilePic.setImageURI(uri);
-        }*/
+    public Uri getImageUri(@NonNull Context context, Bitmap bitmap){
+        String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), bitmap, "myImage", "");
+        return Uri.parse(path);
+    }
 
+    public void requirePermission(){
+        ActivityCompat.requestPermissions(EditTutorMyAccountActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
     }
 
     private void updateUserData(String photo, String subjects, String hourlyCost, String qualifications, String description){
@@ -110,36 +127,30 @@ public class EditTutorMyAccountActivity extends AppCompatActivity {
         progressDialog.setTitle("Updating Information");
         progressDialog.show();
         String url = Constants.EDIT_TUTOR_PROFILE_URL;
-        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                if (response.equals("Successfully Updated")){
-                    progressDialog.dismiss();
-                    Toast.makeText(EditTutorMyAccountActivity.this, response, Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(EditTutorMyAccountActivity.this, TutorMyAccountActivity.class));
-                    finish();
-                }
-                else{
-                    progressDialog.dismiss();
-                    Toast.makeText(EditTutorMyAccountActivity.this, response, Toast.LENGTH_SHORT).show();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
+        StringRequest request = new StringRequest(Request.Method.POST, url, response -> {
+            if (response.equals("Successfully Updated")){
                 progressDialog.dismiss();
-                Toast.makeText(EditTutorMyAccountActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditTutorMyAccountActivity.this, response, Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(EditTutorMyAccountActivity.this, TutorMyAccountActivity.class));
+                finish();
             }
+            else{
+                progressDialog.dismiss();
+                Toast.makeText(EditTutorMyAccountActivity.this, response, Toast.LENGTH_SHORT).show();
+            }
+        }, error -> {
+            progressDialog.dismiss();
+            Toast.makeText(EditTutorMyAccountActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
         }){
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
+            protected Map<String, String> getParams() {
                 HashMap<String, String> param = new HashMap<>();
+                param.put("ID", SharedPreferenceManager.getID());
                 param.put("Photo", photo);
                 param.put("Subjects", subjects);
                 param.put("HourlyCost", hourlyCost);
                 param.put("Qualifications", qualifications);
                 param.put("Description", description);
-
                 return param;
             }
         };

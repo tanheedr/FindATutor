@@ -8,5 +8,7 @@ public class Constants {
     public static final String TUTOR_PROFILE_URL = BASE_URL + "tutorData.php";
     public static final String EDIT_TUTOR_PROFILE_URL = BASE_URL + "editTutorData.php";
     public static final String PARENT_PROFILE_URL = BASE_URL + "parentData.php";
+    public static final String EDIT_PARENT_PROFILE_URL = BASE_URL + "editParentData.php";
+    public static final String SEND_MESSAGE_URL = BASE_URL + "sendMessage.php";
 
 }

@@ -4,11 +4,16 @@ import com.google.gson.annotations.SerializedName;
 
 public class User {
 
+    @SerializedName("RecipientID") private String recipientID;
     @SerializedName("FirstName") private String firstName;
     @SerializedName("Surname") private String surname;
     @SerializedName("Photo") private String photo;
     @SerializedName("Message") private String lastMessage;
-    @SerializedName("timestamp") private String timestamp;
+    @SerializedName("Timestamp") private String timestamp;
+
+    public String getRecipientID() {
+        return recipientID;
+    }
 
     public String getFirstName() {
         return firstName;
@@ -27,7 +32,7 @@ public class User {
     }
 
     public String getTimestamp() {
-        return timestamp;
+        return timestamp.substring(5, timestamp.length() - 3);
     }
 
 }

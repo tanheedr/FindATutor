@@ -94,7 +94,6 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         JSONObject object = new JSONObject(response);
                         SharedPreferenceManager.getmInstance(getApplicationContext()).UserLogin(object.getInt("ID"), object.getInt("AccountType"));
-                        //Toast.makeText(MainActivity.this, SharedPreferenceManager.getID(), Toast.LENGTH_SHORT).show();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

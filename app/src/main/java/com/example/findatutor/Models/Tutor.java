@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class Tutor {
 
+    @SerializedName("ID") private String ID;
     @SerializedName("FirstName") private String firstName;
     @SerializedName("Surname") private String surname;
     @SerializedName("Photo") private String photo;
@@ -11,6 +12,10 @@ public class Tutor {
     @SerializedName("HourlyCost") private String hourlyCost;
     @SerializedName("Qualifications") private String qualifications;
     @SerializedName("Description") private String description;
+
+    public String getID(){
+        return ID;
+    }
 
     public String getFirstName() {
         return firstName;
