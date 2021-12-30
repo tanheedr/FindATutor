@@ -1,30 +1,24 @@
 <?php
 
-require "connection.php";
+require_once "operations.php";
 
-//INSERT INTO `chats` (`MessageID`, `SenderID`, `ReceiverID`, `Message`, `Timestamp`) VALUES (NULL, '1', '3', 'this is a new chat', UTC_TIMESTAMP());
-
-session_start();
-
-//echo $_SESSION['ID'][0];
-$SenderID = 1;
-
-//Fix the query
-$query = "SELECT a.FirstName, a.Surname, a.Photo, m.Message, m.Timestamp FROM accounts a, chats m WHERE SenderID = '$SenderID' AND a.ID = m.ReceiverID AND m.Timestamp = (SELECT m2.Timestamp FROM chats m2 WHERE m2.ReceiverID = a.ID ORDER BY Timestamp DESC LIMIT 1)";
-$result = mysqli_query($connection, $query);
 $response = array();
-while($row = mysqli_fetch_assoc($result)){
-    array_push($response,
-    array(
-        'FirstName' => $row['FirstName'],
-        'Surname' => $row['Surname'],
-        'Photo' => $row['Photo'],
-        'Message' => $row['Message'],
-        'Timestamp' => $row['Timestamp'])
-    );
-}
-echo json_encode($response);
 
-mysqli_close($connection);
+if($_SERVER["REQUEST_METHOD"] == "GET"){
+    $db = new Operations();
+    $user = $db -> getAllMessages($_GET["ID"]);
+    for ($i = 0; $i < sizeof($user); $i++){
+        $response[$i]["RecipientID"] = $user[$i]["ID"];
+        $response[$i]["FirstName"] = $user[$i]["FirstName"];
+        $response[$i]["Surname"] = $user[$i]["Surname"];
+        $response[$i]["Photo"] = $user[$i]["Photo"];
+        $response[$i]["Message"] = $user[$i]["Message"];
+        $response[$i]["Timestamp"] = $user[$i]["Timestamp"];
+    }
+}else{
+    $response["Message"] = "Invalid request";
+}
+
+echo json_encode($response);
 
 ?>

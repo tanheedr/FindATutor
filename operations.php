@@ -74,7 +74,6 @@ class Operations{
         return $statement -> get_result() -> fetch_assoc();
     }
 
-
     public function getTutorData($ID){
         $statement = $this -> connection -> prepare("SELECT Photo, Subjects, HourlyCost, Qualifications, Description FROM accounts, tutordescription WHERE TutorID = ? AND TutorID = ID");
         $statement -> bind_param("i", $ID);
@@ -87,7 +86,7 @@ class Operations{
             echo "Not a valid price";
         }else{
             $statement = $this -> connection -> prepare("UPDATE accounts, tutordescription SET Photo = ?, Subjects = ?, HourlyCost = ?, Qualifications = ?, Description = ? WHERE TutorID = ? AND TutorID = ID");
-            $statement -> bind_param("ssissi", $photo, $subjects, $hourlyCost, $qualifications, $description, $ID);
+            $statement -> bind_param("sssssi", $photo, $subjects, $hourlyCost, $qualifications, $description, $ID);
             if($statement -> execute()){
                 echo "Successfully Updated";
             }else{
@@ -113,20 +112,9 @@ class Operations{
         }
     }
 
-    public function getTutorsWithSearch($subject){
-        $statement = $this -> connection -> prepare("SELECT FirstName, Surname, Photo, Subjects, HourlyCost, Qualifications, Description FROM accounts, tutordescription WHERE Subjects LIKE CONCAT('%', ?, '%') AND TutorID = ID");
-        $statement -> bind_param("s", $subject);
-        $statement -> execute();
-        $result = $statement -> get_result();
-        $tutors = array();
-        while($row = $result -> fetch_array(MYSQLI_NUM)){
-            array_push($tutors, $row);
-        }
-        return $tutors;
-    }
-
-    public function getTutorsWithoutSearch(){
-        $statement = $this -> connection -> prepare("SELECT FirstName, Surname, Photo, Subjects, HourlyCost, Qualifications, Description FROM accounts, tutordescription WHERE TutorID = ID");
+    public function getTutorsWithSearch($ID, $subject){
+        $statement = $this -> connection -> prepare("SELECT ID, FirstName, Surname, Photo, Subjects, HourlyCost, Qualifications, Description FROM accounts, tutordescription WHERE Subjects LIKE CONCAT('%', ?, '%') AND TutorID = ID AND TutorID != ?");
+        $statement -> bind_param("si", $subject, $ID);
         $statement -> execute();
         $result = $statement -> get_result();
         $tutors = array();
@@ -136,6 +124,58 @@ class Operations{
         return $tutors;
     }
 
+    public function getTutorsWithoutSearch($ID){
+        $statement = $this -> connection -> prepare("SELECT ID, FirstName, Surname, Photo, Subjects, HourlyCost, Qualifications, Description FROM accounts, tutordescription WHERE TutorID = ID AND TutorID != ?");
+        $statement -> bind_param("i", $ID);
+        $statement -> execute();
+        $result = $statement -> get_result();
+        $tutors = array();
+        while($row = $result -> fetch_assoc()){
+            array_push($tutors, $row);
+        }
+        return $tutors;
+    }
+
+    public function getAllMessages($SenderID){
+        $statement = $this -> connection -> prepare("SELECT a.ID, a.FirstName, a.Surname, a.Photo, m.Message, m.Timestamp
+        FROM accounts a, messages m
+        WHERE ((SenderID = ? AND ReceiverID = ID) OR (ReceiverID = ? AND SenderID = ID)) AND (LEAST(SenderID, ReceiverID), GREATEST(SenderID, ReceiverID), Timestamp)
+        IN (SELECT LEAST(SenderID, ReceiverID) AS x, GREATEST(SenderID, ReceiverID) as y,
+            MAX(Timestamp) AS Timestamp
+            FROM messages
+            GROUP BY x, y)
+        ORDER BY Timestamp DESC");
+        $statement -> bind_param("ii", $SenderID, $SenderID);
+        $statement -> execute();
+        $result = $statement -> get_result();
+        $users = array();
+        while($row = $result -> fetch_assoc()){
+            array_push($users, $row);
+        }
+        return $users;
+    }
+
+    public function getChat($SenderID, $ReceiverID){
+        $statement = $this -> connection -> prepare("SELECT SenderID, Message, Timestamp FROM messages WHERE (SenderID = ? AND ReceiverID = ?) OR (SenderID = ? AND ReceiverID = ?)");
+        $statement -> bind_param("iiii", $SenderID, $ReceiverID, $ReceiverID, $SenderID);
+        $statement -> execute();
+        $result = $statement -> get_result();
+        $messages = array();
+        while($row = $result -> fetch_assoc()){
+            array_push($messages, $row);
+        }
+        return $messages;
+    }
+
+    public function sendMessage($SenderID, $ReceiverID, $message){
+        $statement = $this -> connection -> prepare("INSERT INTO `messages` (`MessageID`, `SenderID`, `ReceiverID`, `Message`, `Timestamp`) VALUES (NULL, ?, ?, ?, UTC_TIMESTAMP())");
+        $statement -> bind_param("iis", $SenderID, $ReceiverID, $message);
+        if($statement -> execute()){
+            echo "Message Sent";
+        }else{
+            echo "Error Sending Message";
+        }
+    }
 }
 
 ?>

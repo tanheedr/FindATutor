@@ -12,10 +12,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $response["AccountType"] = $user["AccountType"];
         $response["Message"] = "Login Successful";
     }else{
-        $response["Message"] = "Invalid details";
-    }
+        $response = "Invalid details";
+        }
 }else{
-    $response["Message"] = "Invalid request";
+    $response = "Invalid request";
 }
 
 echo json_encode($response);

@@ -1,21 +1,21 @@
 <?php
 
-require "connection.php";
-header('content-type: application/json');
+require_once "operations.php";
 
-session_start();
+$response = array();
 
-//echo $_SESSION['ID'][0];
-$SenderID = 1;
-$ReceiverID = 3;
-
-$query = "SELECT Message, Timestamp FROM chats WHERE (SenderID = '$SenderID' AND ReceiverID = '$ReceiverID') OR (SenderID = '$ReceiverID' AND ReceiverID = '$SenderID')";
-$res = mysqli_query($connection, $query);
-$json_data = array();
-
-while($row = mysqli_fetch_assoc($res)){
-    $json_data[] = $row;
+if($_SERVER["REQUEST_METHOD"] == "GET"){
+    $db = new Operations();
+    $chat = $db -> getChat($_GET["SenderID"], $_GET["RecipientID"]);
+    for ($i = 0; $i < sizeof($chat); $i++){
+        $response[$i]["SenderID"] = $chat[$i]["SenderID"];
+        $response[$i]["Message"] = $chat[$i]["Message"];
+        $response[$i]["Timestamp"] = $chat[$i]["Timestamp"];
+    }
+}else{
+    $response["Message"] = "Invalid request";
 }
-echo json_encode($json_data);
+
+echo json_encode($response);
 
 ?>
