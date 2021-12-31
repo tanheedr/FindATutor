@@ -26,7 +26,6 @@ import com.example.findatutor.Adapters.ChatsAdapter;
 import com.example.findatutor.R;
 import com.example.findatutor.Singleton.MySingleton;
 import com.example.findatutor.Singleton.SharedPreferenceManager;
-import com.example.findatutor.databinding.ActivityChatBinding;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 import org.json.JSONException;
@@ -47,7 +46,6 @@ public class ChatActivity extends AppCompatActivity {
     TextView firstName, surname;
     MaterialEditText message;
     ImageButton send;
-    ActivityChatBinding binding;
     private RecyclerView recyclerView;
     private List<Chat> chats;
     private ChatsAdapter adapter;
@@ -71,14 +69,18 @@ public class ChatActivity extends AppCompatActivity {
         GetUserDataRequest();
         displayChat();
 
-        binding.chatSend.setOnClickListener(v -> {
-            Toast.makeText(ChatActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
-            String txtMessage = Objects.requireNonNull(binding.chatMessage.getText()).toString();
+        send.setOnClickListener(v -> {
+            String txtMessage = Objects.requireNonNull(message.getText()).toString();
             if(!TextUtils.isEmpty(txtMessage)){
-                sendMessage(txtMessage);
+                sendMessage(txtMessage.trim());
             }
-            binding.chatMessage.getText().clear();
+            message.getText().clear();
+            displayChat();
         });
+
+        for(;;){
+            displayChat();
+        }
     }
 
     public void GetUserDataRequest() {
@@ -118,6 +120,7 @@ public class ChatActivity extends AppCompatActivity {
                 chats = response.body();
                 adapter = new ChatsAdapter(chats, ChatActivity.this);
                 recyclerView.setAdapter(adapter);
+                recyclerView.scrollToPosition(adapter.getItemCount() - 1);
                 adapter.notifyDataSetChanged();
             }
 
@@ -126,6 +129,7 @@ public class ChatActivity extends AppCompatActivity {
                 Toast.makeText(ChatActivity.this, "Error on:" + t.toString(), Toast.LENGTH_SHORT).show();
             }
         });
+        displayChat();
     }
 
     public boolean onCreateOptionsMenu(Menu menu){
@@ -153,6 +157,5 @@ public class ChatActivity extends AppCompatActivity {
         };
         request.setRetryPolicy(new DefaultRetryPolicy(30000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         MySingleton.getmInstance(ChatActivity.this).addToRequestQueue(request);
-        displayChat();
     }
 }

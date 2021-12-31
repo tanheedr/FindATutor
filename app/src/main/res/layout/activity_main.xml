@@ -29,9 +29,7 @@
         android:id="@+id/email"
         android:padding="5dp"
         android:textColor="@color/colorPrimaryDark"
-        android:inputType="textEmailAddress">
-
-    </com.rengwuxian.materialedittext.MaterialEditText>
+        android:inputType="textEmailAddress"/>
 
     <com.rengwuxian.materialedittext.MaterialEditText
         android:layout_width="match_parent"
@@ -44,9 +42,7 @@
         android:id="@+id/password"
         android:padding="5dp"
         android:textColor="@color/colorPrimaryDark"
-        android:inputType="textPassword">
-
-    </com.rengwuxian.materialedittext.MaterialEditText>
+        android:inputType="textPassword"/>
 
     <CheckBox
         android:layout_width="wrap_content"
@@ -58,8 +54,17 @@
         android:layout_gravity="center"
         android:layout_marginTop="10dp"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/forgetPassword"
+        android:text="Forget Password"
+        android:textColor="@color/colorPrimaryDark"
+        android:layout_marginTop="20dp"
+        android:clickable="true"/>
+
     <Button
-        android:layout_width="750px"
+        android:layout_width="275dp"
         android:layout_height="wrap_content"
         android:text="Login"
         android:id="@+id/login"
@@ -69,7 +74,7 @@
         android:layout_marginTop="40dp"/>
 
     <Button
-        android:layout_width="750px"
+        android:layout_width="275dp"
         android:layout_height="wrap_content"
         android:text="Register"
         android:id="@+id/register"

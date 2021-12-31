@@ -2,7 +2,6 @@ package com.example.findatutor.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +33,7 @@ public class TutorsAdapter extends RecyclerView.Adapter<TutorsAdapter.MyViewHold
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.card_holder,viewGroup,false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.row_tutor,viewGroup,false);
         return new MyViewHolder(view);
     }
 
@@ -65,6 +64,7 @@ public class TutorsAdapter extends RecyclerView.Adapter<TutorsAdapter.MyViewHold
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
+
             firstName = itemView.findViewById(R.id.tutorFirstName);
             surname = itemView.findViewById(R.id.tutorSurname);
             photo = itemView.findViewById(R.id.tutorProfilePic);
@@ -78,7 +78,6 @@ public class TutorsAdapter extends RecyclerView.Adapter<TutorsAdapter.MyViewHold
                 SharedPreferenceManager.getmInstance(context.getApplicationContext()).MessageUser(ID);
                 context.startActivity(new Intent(context, ChatActivity.class));
             });
-
         }
     }
 }

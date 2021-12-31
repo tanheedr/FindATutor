@@ -38,7 +38,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginTop="10dp"
         android:id="@+id/recyclerView"
-        tools:listitem="@layout/card_holder"
+        tools:listitem="@layout/row_tutor"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
 </LinearLayout>
