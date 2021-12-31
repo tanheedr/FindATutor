@@ -18,8 +18,10 @@ class Operations{
         if ($accountType == "Parent"){
             $accountType = 1;
         }
-        else{
+        elseif($accountType == "Tutor"){
             $accountType = 2;
+        }else{
+            return "Invalid Account Type";
         }
 
         if(strlen($password) > 64 || strlen($password) < 6){
@@ -39,10 +41,19 @@ class Operations{
             if($this -> doesUserExist($email)){
                 echo "This email is already registered";
             }else{
-                $statement = $this -> connection -> prepare("INSERT INTO accounts (`AccountType`,`FirstName`,`Surname`,`Email`,`Password`) VALUES (?,?,?,?,?)");
-                $statement -> bind_param("issss", $accountType, $firstName, $surname, $email, $hashedPassword);
+                $verificationKey = hash('sha1', time().$email);
+                $statement = $this -> connection -> prepare("INSERT INTO accounts (`AccountType`,`FirstName`,`Surname`,`Email`,`Password`, VerificationKey) VALUES (?,?,?,?,?,?)");
+                $statement -> bind_param("isssss", $accountType, $firstName, $surname, $email, $hashedPassword, $verificationKey);
                 if($statement -> execute()){
-                    echo "Successfully Registered";
+                    echo "Successfully Registered\n";
+                    $this -> emailVerification($email, $verificationKey);
+                    if($accountType == 2){
+                        $sqlGetTutorID = $this -> getTutorID($email);
+                        $TutorID = substr(json_encode($sqlGetTutorID), 6, -1);
+                        $statementTwo = $this -> connection -> prepare("INSERT INTO `tutordescription` (`TutorID`, `Subjects`, `HourlyCost`, `Qualifications`, `Description`, `Verified`) VALUES (?, NULL, NULL, NULL, NULL, '0')");
+                        $statementTwo -> bind_param("i", $TutorID);
+                        $statementTwo -> execute();
+                    }
                 }else{
                     echo "Registration Error";
                 }
@@ -51,16 +62,90 @@ class Operations{
     }
 
     private function doesUserExist($email){
-        $statement = $this -> connection -> prepare("SELECT ID FROM accounts WHERE email = ?");
+        $statement = $this -> connection -> prepare("SELECT ID FROM accounts WHERE Email = ?");
         $statement -> bind_param("s", $email);
         $statement -> execute();
         $statement -> store_result();
         return $statement -> num_rows > 0;
     }
 
+    private function getTutorID($email){
+        $statement = $this -> connection -> prepare("SELECT ID FROM accounts WHERE Email = ?");
+        $statement -> bind_param("s", $email);
+        $statement -> execute();
+        return $statement -> get_result() -> fetch_assoc();
+    }
+
+    private function emailVerification($email, $verificationKey){
+        $to = $email;
+        $subject = 'Email Verification';
+        $message = "<a href = 'http://localhost/FindATutor/verify.php?VerificationKey=$verificationKey'>Verify Email Address</a>";
+        $headers = 'From: findatutor7@gmail.com'."\r\n".
+                    'MIME-Version: 1.0'."\r\n".
+                    'Content-type: text/html; charset=utf-8';
+
+        if(mail($to, $subject, $message, $headers)){
+            echo "Please head to your email to verify your account";
+        }else{
+            echo "Error";
+        }
+    }
+
+    public function verify($verificationKey){
+        $statement = $this -> connection -> prepare("SELECT VerificationKey, Verified FROM accounts WHERE VerificationKey = ? AND Verified = 0 LIMIT 1");
+        $statement -> bind_param("s", $verificationKey);
+        $statement -> execute();
+        $statement -> store_result();
+        $result = $statement -> num_rows == 1;
+        if($result){
+            $statement = $this -> connection -> prepare("UPDATE accounts SET Verified = 1 WHERE VerificationKey = ? LIMIT 1");
+            $statement -> bind_param("s", $verificationKey);
+            if($statement -> execute()){
+                return "Your account has been verified. You may now login.";
+            }else{
+                return "Error";
+            }
+        }else{
+            return "This account is already verified or invalid verification key";
+        }
+    }
+
+    public function forgetPassword($email){
+        $to = $email;
+        $subject = 'Reset Password';
+        $message = "<a href = 'http://localhost/FindATutor/changePassword.php?Email=$email'>Reset your password here</a>";
+        $headers = 'From: findatutor7@gmail.com'."\r\n".
+                    'MIME-Version: 1.0'."\r\n".
+                    'Content-type: text/html; charset=utf-8';
+
+        if(mail($to, $subject, $message, $headers)){
+            echo "Please head to your email to reset your password";
+        }else{
+            echo "Error";
+        }
+    }
+
+    public function changePassword($email, $password, $confirmPassword){
+        if(strlen($password) > 64 || strlen($password) < 6){
+            echo "Password must be between 6-64 characters";
+        }
+        else if($password !== $confirmPassword){
+            echo "Passwords do not match";
+        }else{
+            $hashedPassword = hash('sha1', $password);
+            $statement = $this -> connection -> prepare("UPDATE accounts SET Password = ? WHERE Email = ?");
+            $statement -> bind_param("ss", $hashedPassword, $email);
+            if($statement -> execute()){
+                echo "Password Changed";
+            }else{
+                echo "Error Changing Password";
+            }
+        }
+    }
+
     public function loginUser($email, $password){
         $hashedPassword = hash('sha1', $password);
-        $statement = $this -> connection -> prepare("SELECT ID FROM accounts WHERE Email = ? AND Password = ?");
+        $statement = $this -> connection -> prepare("SELECT ID FROM accounts WHERE Email = ? AND Password = ? AND accounts.Verified = 1");
         $statement -> bind_param("ss", $email, $hashedPassword);
         $statement -> execute();
         $statement -> store_result();
@@ -113,7 +198,7 @@ class Operations{
     }
 
     public function getTutorsWithSearch($ID, $subject){
-        $statement = $this -> connection -> prepare("SELECT ID, FirstName, Surname, Photo, Subjects, HourlyCost, Qualifications, Description FROM accounts, tutordescription WHERE Subjects LIKE CONCAT('%', ?, '%') AND TutorID = ID AND TutorID != ?");
+        $statement = $this -> connection -> prepare("SELECT ID, FirstName, Surname, Photo, Subjects, HourlyCost, Qualifications, Description FROM accounts, tutordescription WHERE Subjects LIKE CONCAT('%', ?, '%') AND TutorID = ID AND TutorID != ? AND tutordescription.Verified = 1");
         $statement -> bind_param("si", $subject, $ID);
         $statement -> execute();
         $result = $statement -> get_result();
@@ -125,7 +210,7 @@ class Operations{
     }
 
     public function getTutorsWithoutSearch($ID){
-        $statement = $this -> connection -> prepare("SELECT ID, FirstName, Surname, Photo, Subjects, HourlyCost, Qualifications, Description FROM accounts, tutordescription WHERE TutorID = ID AND TutorID != ?");
+        $statement = $this -> connection -> prepare("SELECT ID, FirstName, Surname, Photo, Subjects, HourlyCost, Qualifications, Description FROM accounts, tutordescription WHERE TutorID = ID AND TutorID != ? AND Verified = 1");
         $statement -> bind_param("i", $ID);
         $statement -> execute();
         $result = $statement -> get_result();

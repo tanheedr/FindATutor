@@ -18,6 +18,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $response = "Invalid request";
 }
 
-echo json_encode($response);
+if (count((array)$response) == 1){
+    echo $response;
+}else{
+    echo json_encode($response);
+}
 
 ?>
