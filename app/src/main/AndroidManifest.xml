@@ -21,7 +21,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FindATutor">
-        <activity android:name=".Activities.ForgetPasswordActivity"></activity>
+        <activity android:name=".Activities.CalendarEditWeeklyActivity"></activity>
+        <activity android:name=".Activities.CalendarWeeklyActivity" />
+        <activity android:name=".Activities.ForgetPasswordActivity" />
         <activity android:name=".Activities.CalendarActivity" />
         <activity android:name=".Activities.EditParentMyAccountActivity" />
         <activity android:name=".Activities.ParentMyAccountActivity" />

@@ -3,6 +3,7 @@ package com.example.findatutor.Activities;
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.widget.Toast;
@@ -46,6 +47,7 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     public void fetchTutors(String subjectSearch){
+        Log.d("TAG", subjectSearch);
         ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
         Call<List<Tutor>> call = apiInterface.getTutors(SharedPreferenceManager.getID(), subjectSearch);
         call.enqueue(new Callback<List<Tutor>>() {
@@ -82,10 +84,9 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String newText) {
                 fetchTutors(newText);
-                return false;
+                return true;
             }
         });
-
         return true;
     }
 

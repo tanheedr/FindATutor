@@ -43,8 +43,8 @@
         android:orientation="horizontal"
         android:gravity="center"
         android:id="@+id/linear2"
-        app:layout_constraintTop_toBottomOf="@+id/linear1"
-        android:layout_marginTop="50dp">
+        app:layout_constraintBottom_toTopOf="@+id/linear3"
+        android:layout_marginBottom="50dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -77,8 +77,9 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center"
-        app:layout_constraintTop_toBottomOf="@+id/linear2"
-        android:layout_marginTop="75dp">
+        android:id="@+id/linear3"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="50dp">
 
         <Button
             android:layout_width="wrap_content"
