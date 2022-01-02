@@ -136,7 +136,7 @@ class Operations{
             $statement = $this -> connection -> prepare("UPDATE accounts SET Password = ? WHERE Email = ?");
             $statement -> bind_param("ss", $hashedPassword, $email);
             if($statement -> execute()){
-                echo "Password Changed";
+                header("Location: changedPassword.php");
             }else{
                 echo "Error Changing Password";
             }

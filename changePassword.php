@@ -2,16 +2,10 @@
 
 require_once "operations.php";
 
-//if($_SERVER["REQUEST_METHOD"] == "POST"){
-    $db = new Operations();
-    if(isset($_GET["Email"], $_POST["Password"], $_POST["ConfirmPassword"])){
-        $db -> changePassword($_GET["Email"], $_POST["Password"], $_POST["ConfirmPassword"]);
-    }else{
-        echo "Enter All Details";
-    }
-/* }else{
-    echo "Invalid Request";
-} */
+$db = new Operations();
+if(isset($_GET["Email"], $_POST["Password"], $_POST["ConfirmPassword"])){
+    $db -> changePassword($_GET["Email"], $_POST["Password"], $_POST["ConfirmPassword"]);
+}
 
 ?>
 
