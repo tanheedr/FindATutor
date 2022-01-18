@@ -44,10 +44,29 @@ public class SearchActivity extends AppCompatActivity {
 
         fetchTutors("");
 
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        android.widget.SearchView searchView = findViewById(R.id.searchTutor);
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setIconifiedByDefault(false);
+
+        searchView.setOnQueryTextListener(new android.widget.SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                //do something when text submitted
+                fetchTutors(query);
+                return false;
+            }
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                //do something when text changes
+                fetchTutors(newText);
+                return true;
+            }
+        });
+
     }
 
     public void fetchTutors(String subjectSearch){
-        Log.d("TAG", subjectSearch);
         ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
         Call<List<Tutor>> call = apiInterface.getTutors(SharedPreferenceManager.getID(), subjectSearch);
         call.enqueue(new Callback<List<Tutor>>() {
@@ -66,28 +85,35 @@ public class SearchActivity extends AppCompatActivity {
         });
     }
 
-    @Override
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_search, menu);
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
+        SearchView searchView = findViewById(R.id.searchTutor);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setIconifiedByDefault(false);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                //do something when text submitted
                 fetchTutors(query);
                 return false;
             }
             @Override
             public boolean onQueryTextChange(String newText) {
+                //do something when text changes
                 fetchTutors(newText);
                 return true;
             }
         });
         return true;
-    }
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_search, menu);
+        fetchTutors("Any");
+        return super.onCreateOptionsMenu(menu);
+    }*/
 
 }

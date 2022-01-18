@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class Session {
 
-    @SerializedName("TutorID") private String tutorID;
+    /*@SerializedName("TutorID") private String tutorID;
     @SerializedName("ParentID") private String parentID;
     @SerializedName("Timestamp") private String timestamp;
 
@@ -26,9 +26,9 @@ public class Session {
 
     public String getTime(){
         return timestamp.substring(11);
-    }
+    }*/
 
-    /*public static ArrayList<Session> sessionsList = new ArrayList<>();
+    public static ArrayList<Session> sessionsList = new ArrayList<>();
 
     public static ArrayList<Session> sessionsPerDay(LocalDate date){
         ArrayList<Session> sessions = new ArrayList<>();
@@ -72,5 +72,5 @@ public class Session {
 
     public void setTime(LocalTime time) {
         this.time = time;
-    }*/
+    }
 }

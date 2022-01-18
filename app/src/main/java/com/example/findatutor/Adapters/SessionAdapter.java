@@ -18,9 +18,26 @@ import com.example.findatutor.R;
 
 import java.util.List;
 
-public class SessionAdapter extends RecyclerView.Adapter<SessionAdapter.MyViewHolder> /*ArrayAdapter<Session>*/ {
+public class SessionAdapter extends ArrayAdapter<Session> /*RecyclerView.Adapter<SessionAdapter.MyViewHolder>*/ {
 
-    private final List<Session> sessions;
+    public SessionAdapter(@NonNull Context context, List<Session> sessions) {
+        super(context, 0, sessions);
+    }
+
+    @NonNull
+    @Override
+    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        Session session = getItem(position);
+        if(convertView == null){
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.cell_calendar_weekly, parent, false);
+        }
+        TextView cellSession = convertView.findViewById(R.id.cellSession);
+        String sessionName = session.getName() + " " + CalendarUtils.formattedTime(session.getTime());
+        cellSession.setText(sessionName);
+        return convertView;
+    }
+
+    /*private final List<Session> sessions;
     private final Context context;
 
     public SessionAdapter(List<Session> sessions, Context context) {
@@ -55,22 +72,5 @@ public class SessionAdapter extends RecyclerView.Adapter<SessionAdapter.MyViewHo
             name = itemView.findViewById(R.id.rowSessionName);
             time = itemView.findViewById(R.id.rowSessionTime);
         }
-    }
-
-    /*public SessionAdapter(@NonNull Context context, List<Session> sessions) {
-        super(context, 0, sessions);
-    }
-
-    @NonNull
-    @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        Session session = getItem(position);
-        if(convertView == null){
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.cell_calendar_weekly, parent, false);
-        }
-        TextView cellSession = convertView.findViewById(R.id.cellSession);
-        String sessionName = session.getName() + " " + CalendarUtils.formattedTime(session.getTime());
-        cellSession.setText(sessionName);
-        return convertView;
     }*/
 }

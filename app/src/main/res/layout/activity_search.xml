@@ -16,20 +16,18 @@
         android:textColor="@color/colorPrimaryDark"
         android:layout_marginTop="20dp"/>
 
-    <com.rengwuxian.materialedittext.MaterialEditText
+    <SearchView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Search"
-        app:met_floatingLabel="normal"
         android:layout_marginTop="10dp"
         android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
-        android:id="@+id/search"
+        android:id="@+id/searchTutor"
         android:padding="5dp"
         android:textColor="@color/colorPrimaryDark"
-        android:inputType="text">
-
-    </com.rengwuxian.materialedittext.MaterialEditText>
+        android:inputType="text"
+        app:actionViewClass="android.widget.SearchView"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
