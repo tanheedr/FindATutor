@@ -19,7 +19,7 @@ import com.android.volley.Request;
 import com.android.volley.toolbox.StringRequest;
 import com.bumptech.glide.Glide;
 import com.example.findatutor.Models.Chat;
-import com.example.findatutor.Models.Constants;
+import com.example.findatutor.Networking.Constants;
 import com.example.findatutor.Networking.ApiClient;
 import com.example.findatutor.Networking.ApiInterface;
 import com.example.findatutor.Adapters.ChatsAdapter;
@@ -78,9 +78,6 @@ public class ChatActivity extends AppCompatActivity {
             displayChat();
         });
 
-        for(;;){
-            displayChat();
-        }
     }
 
     public void GetUserDataRequest() {

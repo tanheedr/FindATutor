@@ -19,7 +19,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.example.findatutor.Models.Constants;
+import com.example.findatutor.Networking.Constants;
 import com.example.findatutor.Singleton.MySingleton;
 import com.example.findatutor.R;
 import com.example.findatutor.Singleton.SharedPreferenceManager;

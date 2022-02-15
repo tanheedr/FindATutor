@@ -2,6 +2,7 @@ package com.example.findatutor.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -18,9 +20,10 @@ import com.example.findatutor.R;
 import com.example.findatutor.Models.Tutor;
 import com.example.findatutor.Singleton.SharedPreferenceManager;
 
+import java.util.Arrays;
 import java.util.List;
 
-public class TutorsAdapter extends RecyclerView.Adapter<TutorsAdapter.MyViewHolder> {
+public class TutorsAdapter extends RecyclerView.Adapter<TutorsAdapter.TutorViewHolder> {
 
     private final List<Tutor> tutors;
     private final Context context;
@@ -32,13 +35,13 @@ public class TutorsAdapter extends RecyclerView.Adapter<TutorsAdapter.MyViewHold
 
     @NonNull
     @Override
-    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
+    public TutorViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.row_tutor,viewGroup,false);
-        return new MyViewHolder(view);
+        return new TutorViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull TutorViewHolder holder, int position) {
         Tutor tutor = tutors.get(position);
         holder.ID = Integer.valueOf(tutor.getID());
         holder.firstName.setText(tutor.getFirstName());
@@ -55,14 +58,14 @@ public class TutorsAdapter extends RecyclerView.Adapter<TutorsAdapter.MyViewHold
         return tutors.size();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    public class TutorViewHolder extends RecyclerView.ViewHolder {
 
         TextView firstName, surname, subjects, hourlyCost, qualifications, description;
         ImageView photo;
-        Button message;
+        CardView layout;
         Integer ID;
 
-        public MyViewHolder(@NonNull View itemView) {
+        public TutorViewHolder(@NonNull View itemView) {
             super(itemView);
 
             firstName = itemView.findViewById(R.id.tutorFirstName);
@@ -72,9 +75,9 @@ public class TutorsAdapter extends RecyclerView.Adapter<TutorsAdapter.MyViewHold
             hourlyCost = itemView.findViewById(R.id.tutorHourlyCost);
             qualifications = itemView.findViewById(R.id.tutorQualifications);
             description = itemView.findViewById(R.id.tutorDescription);
-            message = itemView.findViewById(R.id.tutorMessage);
+            layout = itemView.findViewById(R.id.tutorLayout);
 
-            message.setOnClickListener(v -> {
+            layout.setOnClickListener(v -> {
                 SharedPreferenceManager.getmInstance(context.getApplicationContext()).MessageUser(ID);
                 context.startActivity(new Intent(context, ChatActivity.class));
             });

@@ -14,6 +14,7 @@ public class SharedPreferenceManager {
     private static final String KEY_ID = "ID";
     private static final String KEY_ACCOUNT_TYPE = "AccountType";
     private static String KEY_RECIPIENT_ID = null;
+    private static String KEY_NAME_ID = null;
 
     public SharedPreferenceManager(Context mCtx) {
         SharedPreferenceManager.mCtx = mCtx;
@@ -41,6 +42,13 @@ public class SharedPreferenceManager {
         editor.apply();
     }
 
+    public void NameUser(Integer nameID){
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(KEY_NAME_ID, nameID);
+        editor.apply();
+    }
+
     public static String getID(){
         SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE);
         return String.valueOf(sharedPreferences.getInt(KEY_ID, 0));
@@ -54,5 +62,10 @@ public class SharedPreferenceManager {
     public static String getRecipientID(){
         SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE);
         return String.valueOf(sharedPreferences.getInt(KEY_RECIPIENT_ID, 0));
+    }
+
+    public static String getNameID(){
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE);
+        return String.valueOf(sharedPreferences.getInt(KEY_NAME_ID, 0));
     }
 }

@@ -24,7 +24,6 @@
         <activity android:name=".Activities.CalendarEditWeeklyActivity"></activity>
         <activity android:name=".Activities.CalendarWeeklyActivity" />
         <activity android:name=".Activities.ForgetPasswordActivity" />
-        <activity android:name=".Activities.CalendarActivity" />
         <activity android:name=".Activities.EditParentMyAccountActivity" />
         <activity android:name=".Activities.ParentMyAccountActivity" />
         <activity android:name=".Activities.EditTutorMyAccountActivity" />

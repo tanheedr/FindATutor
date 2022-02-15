@@ -14,7 +14,7 @@ import android.widget.Toast;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.toolbox.StringRequest;
-import com.example.findatutor.Models.Constants;
+import com.example.findatutor.Networking.Constants;
 import com.example.findatutor.R;
 import com.example.findatutor.Singleton.MySingleton;
 import com.rengwuxian.materialedittext.MaterialEditText;

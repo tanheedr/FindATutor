@@ -18,14 +18,14 @@
         android:textAlignment="center"
         android:textColor="@color/black"/>
 
-    <EditText
-        android:layout_width="wrap_content"
+    <Spinner
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/sessionNameEnter"
-        android:layout_gravity="center"
-        android:textSize="20sp"
-        android:ems="10"
-        android:inputType="text"/>
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:padding="5dp"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -38,25 +38,37 @@
         android:textAlignment="center"
         android:textColor="@color/black"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/sessionTime"
-        android:layout_gravity="center"
-        android:layout_marginTop="20dp"
-        android:text="Time"
-        android:textSize="20sp"
-        android:textAlignment="center"
-        android:textColor="@color/black"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:orientation="horizontal"
+        android:gravity="center">
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/sessionTimeEnter"
-        android:layout_gravity="center"
-        android:textSize="20sp"
-        android:ems="10"
-        android:inputType="text"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/sessionStartTime"
+            android:text="Start"
+            android:textColor="@color/white"
+            android:background="@color/colorPrimaryDark"
+            android:layout_gravity="center"
+            android:textSize="20sp"
+            android:padding="10dp"
+            android:layout_marginEnd="10dp"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/sessionEndTime"
+            android:text="End"
+            android:textColor="@color/white"
+            android:background="@color/colorPrimaryDark"
+            android:layout_gravity="center"
+            android:textSize="20sp"
+            android:padding="10dp"
+            android:layout_marginStart="10dp"/>
+
+    </LinearLayout>
 
     <Button
         android:layout_width="wrap_content"
@@ -68,6 +80,6 @@
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
         android:textSize="20sp"
-        android:padding="10dp"/>
+        android:padding="15dp"/>
 
 </LinearLayout>

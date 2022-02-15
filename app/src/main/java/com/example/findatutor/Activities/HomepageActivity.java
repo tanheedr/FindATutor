@@ -38,7 +38,7 @@ public class HomepageActivity extends AppCompatActivity {
             }
         });
 
-        calendar.setOnClickListener(v -> startActivity(new Intent(HomepageActivity.this, CalendarActivity.class)));
+        calendar.setOnClickListener(v -> startActivity(new Intent(HomepageActivity.this, CalendarWeeklyActivity.class)));
 
         messages.setOnClickListener(v -> startActivity(new Intent(HomepageActivity.this, MessageActivity.class)));
 

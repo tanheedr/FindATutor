@@ -8,27 +8,37 @@ import java.util.ArrayList;
 
 public class Session {
 
-    /*@SerializedName("TutorID") private String tutorID;
-    @SerializedName("ParentID") private String parentID;
-    @SerializedName("Timestamp") private String timestamp;
+    @SerializedName("ID") private String ID;
+    @SerializedName("FirstName") private String firstName;
+    @SerializedName("Surname") private String surname;
+    @SerializedName("StartTime") private String startTime;
+    @SerializedName("EndTime") private String endTime;
 
-    public String getTutorID() {
-        return tutorID;
+    public String getID(){
+        return ID;
     }
 
-    public String getParentID() {
-        return parentID;
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getSurname() {
+        return surname;
     }
 
     public String getDate() {
-        return timestamp.substring(0, timestamp.length() - 9);
+        return startTime.substring(0, startTime.length() - 9);
     }
 
-    public String getTime(){
-        return timestamp.substring(11);
-    }*/
+    public String getStartTime(){
+        return startTime.substring(11, startTime.length() - 3);
+    }
 
-    public static ArrayList<Session> sessionsList = new ArrayList<>();
+    public String getEndTime(){
+        return endTime.substring(11, endTime.length() - 3);
+    }
+
+/*    public static ArrayList<Session> sessionsList = new ArrayList<>();
 
     public static ArrayList<Session> sessionsPerDay(LocalDate date){
         ArrayList<Session> sessions = new ArrayList<>();
@@ -42,9 +52,9 @@ public class Session {
 
     private String name;
     private LocalDate date;
-    private LocalTime time;
+    private String time;
 
-    public Session(String name, LocalDate date, LocalTime time) {
+    public Session(String name, LocalDate date, String time) {
         this.name = name;
         this.date = date;
         this.time = time;
@@ -66,11 +76,12 @@ public class Session {
         this.date = date;
     }
 
-    public LocalTime getTime() {
+    public String getTime() {
         return time;
     }
 
-    public void setTime(LocalTime time) {
+    public void setTime(String time) {
         this.time = time;
-    }
+    }*/
+
 }
