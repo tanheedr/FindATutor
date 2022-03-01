@@ -42,7 +42,7 @@ class Operations{
                 echo "This email is already registered";
             }else{
                 $verificationKey = hash('sha1', time().$email);
-                $statement = $this -> connection -> prepare("INSERT INTO accounts (`AccountType`,`FirstName`,`Surname`,`Email`,`Password`, VerificationKey) VALUES (?,?,?,?,?,?)");
+                $statement = $this -> connection -> prepare("INSERT INTO accounts (`AccountType`,`FirstName`,`Surname`,`Email`,`Password`, `VerificationKey`, `ExpiryDate`) VALUES (?,?,?,?,?,?, UTC_TIMESTAMP() + INTERVAL 30 MINUTE)");
                 $statement -> bind_param("isssss", $accountType, $firstName, $surname, $email, $hashedPassword, $verificationKey);
                 if($statement -> execute()){
                     echo "Successfully Registered\n";
@@ -87,23 +87,23 @@ class Operations{
         if(mail($to, $subject, $message, $headers)){
             echo "Please head to your email to verify your account";
         }else{
-            echo "Error";
+            echo "Error sending email";
         }
     }
 
     public function verify($verificationKey){
-        $statement = $this -> connection -> prepare("SELECT VerificationKey, Verified FROM accounts WHERE VerificationKey = ? AND Verified = 0 LIMIT 1");
+        $statement = $this -> connection -> prepare("SELECT VerificationKey, Verified FROM accounts WHERE VerificationKey = ? AND UTC_TIMESTAMP() < ExpiryDate AND Verified = 0 LIMIT 1");
         $statement -> bind_param("s", $verificationKey);
         $statement -> execute();
         $statement -> store_result();
         $result = $statement -> num_rows == 1;
         if($result){
-            $statement = $this -> connection -> prepare("UPDATE accounts SET Verified = 1 WHERE VerificationKey = ? LIMIT 1");
+            $statement = $this -> connection -> prepare("UPDATE accounts SET Verified = 1, ExpiryDate = NULL WHERE VerificationKey = ? LIMIT 1");
             $statement -> bind_param("s", $verificationKey);
             if($statement -> execute()){
                 return "Your account has been verified. You may now login.";
             }else{
-                return "Error";
+                return "Verification Error";
             }
         }else{
             return "This account is already verified or invalid verification key";
@@ -120,26 +120,47 @@ class Operations{
 
         if(mail($to, $subject, $message, $headers)){
             echo "Please head to your email to reset your password";
+            $statement = $this -> connection -> prepare("UPDATE accounts SET ExpiryDate = UTC_TIMESTAMP() + INTERVAL 30 MINUTE WHERE Email = ? LIMIT 1");
+            $statement -> bind_param("s", $email);
+            $statement -> execute();
         }else{
-            echo "Error";
+            echo "Error sending email";
+            ini_set('display_errors', 1);
+            ini_set('display_startup_errors', 1);
+            error_reporting(E_ALL);
         }
     }
 
     public function changePassword($email, $password, $confirmPassword){
-        if(strlen($password) > 64 || strlen($password) < 6){
-            echo "Password must be between 6-64 characters";
-        }
-        else if($password !== $confirmPassword){
-            echo "Passwords do not match";
-        }else{
-            $hashedPassword = hash('sha1', $password);
-            $statement = $this -> connection -> prepare("UPDATE accounts SET Password = ? WHERE Email = ?");
-            $statement -> bind_param("ss", $hashedPassword, $email);
-            if($statement -> execute()){
-                header("Location: changedPassword.php");
-            }else{
-                echo "Error Changing Password";
+        $statement = $this -> connection -> prepare("SELECT ExpiryDate FROM accounts WHERE Email = ? AND UTC_TIMESTAMP() < ExpiryDate LIMIT 1");
+        $statement -> bind_param("s", $email);
+        $statement -> execute();
+        $statement -> store_result();
+        $result = $statement -> num_rows == 1;
+        if($result){
+            if(strlen($password) > 64 || strlen($password) < 6){
+                echo "Password must be between 6-64 characters";
             }
+            else if($password !== $confirmPassword){
+                echo "Passwords do not match";
+            }else{
+                $hashedPassword = hash('sha1', $password);
+                $statement = $this -> connection -> prepare("UPDATE accounts SET Password = ? WHERE Email = ?");
+                $statement -> bind_param("ss", $hashedPassword, $email);
+                if($statement -> execute()){
+                    header("Location: changedPassword.php");
+                    $statement = $this -> connection -> prepare("UPDATE accounts SET ExpiryDate = NULL WHERE Email = ? LIMIT 1");
+                    $statement -> bind_param("s", $email);
+                    $statement -> execute();
+                }else{
+                    echo "Error Changing Password";
+                }
+            }
+        }else{
+            $statement = $this -> connection -> prepare("UPDATE accounts SET ExpiryDate = NULL WHERE Email = ? LIMIT 1");
+            $statement -> bind_param("s", $email);
+            $statement -> execute();
+            header("Location: linkExpired.php");
         }
     }
 
@@ -221,7 +242,7 @@ class Operations{
         return $tutors;
     }
 
-    public function getAllMessages($SenderID){
+    public function getUsers($SenderID){
         $statement = $this -> connection -> prepare("SELECT a.ID, a.FirstName, a.Surname, a.Photo, m.Message, m.Timestamp
         FROM accounts a, messages m
         WHERE ((SenderID = ? AND ReceiverID = ID) OR (ReceiverID = ? AND SenderID = ID)) AND (LEAST(SenderID, ReceiverID), GREATEST(SenderID, ReceiverID), Timestamp)
@@ -252,6 +273,25 @@ class Operations{
         return $messages;
     }
 
+    public function getNames($SenderID){
+        $statement = $this -> connection -> prepare("SELECT a.ID, a.FirstName, a.Surname
+        FROM accounts a, messages m
+        WHERE ((SenderID = ? AND ReceiverID = ID) OR (ReceiverID = ? AND SenderID = ID)) AND (LEAST(SenderID, ReceiverID), GREATEST(SenderID, ReceiverID), Timestamp)
+        IN (SELECT LEAST(SenderID, ReceiverID) AS x, GREATEST(SenderID, ReceiverID) as y,
+            MAX(Timestamp) AS Timestamp
+            FROM messages
+            GROUP BY x, y)
+        ORDER BY Timestamp DESC");
+        $statement -> bind_param("ii", $SenderID, $SenderID);
+        $statement -> execute();
+        $result = $statement -> get_result();
+        $users = array();
+        while($row = $result -> fetch_assoc()){
+            array_push($users, $row);
+        }
+        return $users;
+    }
+
     public function sendMessage($SenderID, $ReceiverID, $message){
         $statement = $this -> connection -> prepare("INSERT INTO `messages` (`MessageID`, `SenderID`, `ReceiverID`, `Message`, `Timestamp`) VALUES (NULL, ?, ?, ?, UTC_TIMESTAMP())");
         $statement -> bind_param("iis", $SenderID, $ReceiverID, $message);
@@ -260,6 +300,28 @@ class Operations{
         }else{
             echo "Error Sending Message";
         }
+    }
+
+    public function setSession($TutorID, $ParentID, $startTime, $endTime){
+        $statement = $this -> connection -> prepare("INSERT INTO `calendar` (`SessionID`, `TutorID`, `ParentID`, `StartTime`, `EndTime`) VALUES (NULL, ?, ?, ?, ?)");
+        $statement -> bind_param("iiss", $TutorID, $ParentID, $startTime, $endTime);
+        if($statement -> execute()){
+            echo "Session Saved";
+        }else{
+            echo "Error Saving Session";
+        }
+    }
+
+    public function getSessions($ID, $date){
+        $statement = $this -> connection -> prepare("SELECT ID, FirstName, Surname, StartTime, EndTime FROM accounts a, calendar c WHERE StartTime LIKE CONCAT('%', ?, '%') AND ((c.TutorID = ? AND a.ID = c.ParentID) OR (c.ParentID = ? AND a.ID = c.TutorID))");
+        $statement -> bind_param("sii", $date, $ID, $ID);
+        $statement -> execute();
+        $result = $statement -> get_result();
+        $sessions = array();
+        while($row = $result -> fetch_assoc()){
+            array_push($sessions, $row);
+        }
+        return $sessions;
     }
 }
 
