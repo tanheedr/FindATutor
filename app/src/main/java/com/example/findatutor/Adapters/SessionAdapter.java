@@ -2,23 +2,17 @@ package com.example.findatutor.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.example.findatutor.Activities.ChatActivity;
 import com.example.findatutor.Models.Session;
-import com.example.findatutor.Models.Tutor;
-import com.example.findatutor.Networking.CalendarUtils;
 import com.example.findatutor.R;
 import com.example.findatutor.Singleton.SharedPreferenceManager;
 
@@ -71,12 +65,9 @@ public class SessionAdapter extends RecyclerView.Adapter<SessionAdapter.MyViewHo
             endTime = itemView.findViewById(R.id.rowSessionEndTime);
             layout = itemView.findViewById(R.id.rowSessionLayout);
 
-            layout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    SharedPreferenceManager.getmInstance(context.getApplicationContext()).MessageUser(ID);
-                    context.startActivity(new Intent(context, ChatActivity.class));
-                }
+            layout.setOnClickListener(v -> {
+                SharedPreferenceManager.getmInstance(context.getApplicationContext()).MessageUser(ID);
+                context.startActivity(new Intent(context, ChatActivity.class));
             });
         }
     }

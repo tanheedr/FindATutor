@@ -1,6 +1,5 @@
 package com.example.findatutor.Activities;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -8,12 +7,13 @@ import androidx.core.app.ActivityCompat;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -23,13 +23,15 @@ import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.toolbox.StringRequest;
 import com.example.findatutor.Networking.Constants;
-import com.example.findatutor.Networking.FileUtils;
 import com.example.findatutor.R;
 import com.example.findatutor.Singleton.MySingleton;
 import com.example.findatutor.Singleton.SharedPreferenceManager;
-import com.squareup.picasso.Picasso;
 
-import java.io.File;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -52,6 +54,7 @@ public class EditParentMyAccountActivity extends AppCompatActivity {
         upload = findViewById(R.id.editParentUpload);
         save = findViewById(R.id.saveParentAccount);
 
+        GetParentDataRequest();
         requirePermission();
 
         upload.setOnClickListener(v -> {
@@ -68,38 +71,25 @@ public class EditParentMyAccountActivity extends AppCompatActivity {
             builder.show();
         });
 
-        save.setOnClickListener(v -> {
-            File newPhoto = new File(Uri.parse(selectedImage).getPath());
-            updateUserData(newPhoto.toString());
-        });
+        save.setOnClickListener(v -> updateUserData(selectedImage));
 
     }
 
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(resultCode != RESULT_CANCELED){
-            switch(requestCode){
-                case 0:
-                    if(resultCode == RESULT_OK && data != null){
-                        Bitmap image = (Bitmap) data.getExtras().get("Data");
-                        selectedImage = FileUtils.getPath(EditParentMyAccountActivity.this, getImageUri(EditParentMyAccountActivity.this, image));
-                        photo.setImageBitmap(image);
-                    }
-                    break;
-                case 1:
-                    if(resultCode == RESULT_OK && data != null){
-                        Uri image = data.getData();
-                        selectedImage = FileUtils.getPath(EditParentMyAccountActivity.this, image);
-                        Picasso.get().load(image).into(photo);
-                    }
-            }
+        assert data != null;
+        Uri uri = data.getData();
+        try {
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, stream);
+            byte[] encodedString = stream.toByteArray();
+            selectedImage = Base64.encodeToString(encodedString, Base64.DEFAULT);
+            photo.setImageBitmap(bitmap);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-    }
-
-    public Uri getImageUri(@NonNull Context context, Bitmap bitmap){
-        String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), bitmap, "myImage", "");
-        return Uri.parse(path);
     }
 
     public void requirePermission(){
@@ -137,6 +127,30 @@ public class EditParentMyAccountActivity extends AppCompatActivity {
             }
         };
         request.setRetryPolicy(new DefaultRetryPolicy(30000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        MySingleton.getmInstance(EditParentMyAccountActivity.this).addToRequestQueue(request);
+    }
+
+    public void GetParentDataRequest() {
+        String url = Constants.PARENT_PROFILE_URL;
+        StringRequest request = new StringRequest(Request.Method.POST, url, response -> {
+            try {
+                JSONObject object = new JSONObject(response);
+                String imgUrl = object.getString("Photo");
+                byte[] decodedString = Base64.decode(imgUrl, Base64.DEFAULT);
+                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                photo.setImageBitmap(decodedByte);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }, error -> Toast.makeText(EditParentMyAccountActivity.this, error.toString(), Toast.LENGTH_SHORT).show()) {
+
+            protected Map<String, String> getParams() {
+                Map<String, String> param = new HashMap<>();
+                param.put("ID", SharedPreferenceManager.getID());
+                return param;
+            }
+        };
+
         MySingleton.getmInstance(EditParentMyAccountActivity.this).addToRequestQueue(request);
     }
 }

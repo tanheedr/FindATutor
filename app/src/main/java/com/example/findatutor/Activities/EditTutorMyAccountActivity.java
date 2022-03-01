@@ -1,20 +1,21 @@
 package com.example.findatutor.Activities;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -23,14 +24,16 @@ import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.toolbox.StringRequest;
 import com.example.findatutor.Networking.Constants;
-import com.example.findatutor.Networking.FileUtils;
 import com.example.findatutor.Singleton.MySingleton;
 import com.example.findatutor.R;
 import com.example.findatutor.Singleton.SharedPreferenceManager;
 import com.rengwuxian.materialedittext.MaterialEditText;
-import com.squareup.picasso.Picasso;
 
-import java.io.File;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -56,6 +59,7 @@ public class EditTutorMyAccountActivity extends AppCompatActivity {
         upload = findViewById(R.id.editUpload);
         save = findViewById(R.id.SaveTutorAccount);
 
+        GetTutorDataRequest();
         requirePermission();
 
         upload.setOnClickListener(v -> {
@@ -82,8 +86,7 @@ public class EditTutorMyAccountActivity extends AppCompatActivity {
                 Toast.makeText(EditTutorMyAccountActivity.this, "All fields required", Toast.LENGTH_SHORT).show();
             }
             else{
-                File newPhoto = new File(Uri.parse(selectedImage).getPath());
-                updateUserData(newPhoto.toString(), newSubjects, newHourlyCost, newQualifications, newDescription);
+                updateUserData(selectedImage, newSubjects, newHourlyCost, newQualifications, newDescription);
             }
         });
 
@@ -92,28 +95,18 @@ public class EditTutorMyAccountActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(resultCode != RESULT_CANCELED){
-            switch(requestCode){
-                case 0:
-                    if(resultCode == RESULT_OK && data != null){
-                        Bitmap image = (Bitmap) data.getExtras().get("Data");
-                        selectedImage = FileUtils.getPath(EditTutorMyAccountActivity.this, getImageUri(EditTutorMyAccountActivity.this, image));
-                        editProfilePic.setImageBitmap(image);
-                    }
-                    break;
-                case 1:
-                    if(resultCode == RESULT_OK && data != null){
-                        Uri image = data.getData();
-                        selectedImage = FileUtils.getPath(EditTutorMyAccountActivity.this, image);
-                        Picasso.get().load(image).into(editProfilePic);
-                    }
-            }
+        assert data != null;
+        Uri uri = data.getData();
+        try {
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, stream);
+            byte[] encodedString = stream.toByteArray();
+            selectedImage = Base64.encodeToString(encodedString, Base64.DEFAULT);
+            editProfilePic.setImageBitmap(bitmap);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-    }
-
-    public Uri getImageUri(@NonNull Context context, Bitmap bitmap){
-        String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), bitmap, "myImage", "");
-        return Uri.parse(path);
     }
 
     public void requirePermission(){
@@ -155,6 +148,42 @@ public class EditTutorMyAccountActivity extends AppCompatActivity {
             }
         };
         request.setRetryPolicy(new DefaultRetryPolicy(30000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        MySingleton.getmInstance(EditTutorMyAccountActivity.this).addToRequestQueue(request);
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    public void GetTutorDataRequest() {
+        String url = Constants.TUTOR_PROFILE_URL;
+        StringRequest request = new StringRequest(Request.Method.POST, url, response -> {
+            try {
+                JSONObject object = new JSONObject(response);
+                String imgUrl = object.getString("Photo");
+                String stringSubjects = object.getString("Subjects");
+                String stringHourlyCost = object.getString("HourlyCost");
+                String stringQualifications = object.getString("Qualifications");
+                String stringDescription = object.getString("Description");
+
+                byte[] decodedString = Base64.decode(imgUrl, Base64.DEFAULT);
+                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                editProfilePic.setImageBitmap(decodedByte);
+
+                editSubjects.setText(stringSubjects);
+                editHourlyCost.setText(stringHourlyCost);
+                editQualifications.setText(stringQualifications);
+                editDescription.setText(stringDescription);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }, error -> Toast.makeText(EditTutorMyAccountActivity.this, error.toString(), Toast.LENGTH_SHORT).show()) {
+
+            protected Map<String, String> getParams() {
+                Map<String, String> param = new HashMap<>();
+                param.put("ID", SharedPreferenceManager.getID());
+                return param;
+            }
+        };
+
         MySingleton.getmInstance(EditTutorMyAccountActivity.this).addToRequestQueue(request);
     }
 }

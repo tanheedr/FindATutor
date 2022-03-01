@@ -31,11 +31,6 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-/* package com.example.findatutor;
-Place where change IP address:
-Constants
-*/
-
 public class MainActivity extends AppCompatActivity {
 
     MaterialEditText email, password;
@@ -80,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
         String loginState = sharedPreferences.getString(getResources().getString(R.string.preferredLoginState), "");
         if(loginState.equals("Logged in")){
             startActivity(new Intent(MainActivity.this, HomepageActivity.class));
+            finish();
         }
 
     }

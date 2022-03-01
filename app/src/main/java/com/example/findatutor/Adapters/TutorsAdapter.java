@@ -2,11 +2,12 @@ package com.example.findatutor.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,13 +15,11 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.example.findatutor.Activities.ChatActivity;
 import com.example.findatutor.R;
 import com.example.findatutor.Models.Tutor;
 import com.example.findatutor.Singleton.SharedPreferenceManager;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class TutorsAdapter extends RecyclerView.Adapter<TutorsAdapter.TutorViewHolder> {
@@ -46,7 +45,11 @@ public class TutorsAdapter extends RecyclerView.Adapter<TutorsAdapter.TutorViewH
         holder.ID = Integer.valueOf(tutor.getID());
         holder.firstName.setText(tutor.getFirstName());
         holder.surname.setText(tutor.getSurname());
-        Glide.with(holder.itemView.getContext()).load(tutor.getPhoto()).into(holder.photo);
+
+        byte[] decodedString = Base64.decode(tutor.getPhoto(), Base64.DEFAULT);
+        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        holder.photo.setImageBitmap(decodedByte);
+
         holder.subjects.setText(tutor.getSubjects());
         holder.hourlyCost.setText(tutor.getHourlyCost());
         holder.qualifications.setText(tutor.getQualifications());

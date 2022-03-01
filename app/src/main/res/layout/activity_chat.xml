@@ -36,7 +36,7 @@
                 android:textStyle="bold"
                 android:textColor="@color/white"
                 android:layout_marginStart="10dp"
-                android:layout_marginTop="15dp"/>
+                android:layout_marginTop="0dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -47,7 +47,22 @@
                 android:textStyle="bold"
                 android:textColor="@color/white"
                 android:layout_marginStart="5dp"
-                android:layout_marginTop="15dp"/>
+                android:layout_marginTop="0dp"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:id="@+id/chatNewSession"
+                android:text="New Session"
+                android:textColor="@color/white"
+                android:background="@color/colorPrimaryDark"
+                android:textSize="15sp"
+                android:padding="10sp"/>
 
         </LinearLayout>
 

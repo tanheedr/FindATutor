@@ -2,6 +2,9 @@ package com.example.findatutor.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +15,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.example.findatutor.Activities.ChatActivity;
 import com.example.findatutor.Models.User;
 import com.example.findatutor.R;
@@ -41,7 +43,11 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHold
     public void onBindViewHolder(@NonNull UserViewHolder holder, int position) {
         User user = users.get(position);
         holder.recipientID = Integer.valueOf(user.getRecipientID());
-        Glide.with(holder.itemView.getContext()).load(user.getPhoto()).into(holder.photo);
+
+        byte[] decodedString = Base64.decode(user.getPhoto(), Base64.DEFAULT);
+        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        holder.photo.setImageBitmap(decodedByte);
+
         holder.firstName.setText(user.getFirstName());
         holder.surname.setText(user.getSurname());
         holder.lastMessage.setText(user.getLastMessage());

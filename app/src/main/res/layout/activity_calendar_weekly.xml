@@ -127,7 +127,8 @@
             android:text="New Session"
             android:textColor="@color/white"
             android:background="@color/colorPrimaryDark"
-            android:textSize="15sp"/>
+            android:textSize="15sp"
+            android:padding="10sp"/>
 
     </LinearLayout>
 

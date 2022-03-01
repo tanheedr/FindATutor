@@ -5,7 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,7 +16,6 @@ import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.toolbox.StringRequest;
-import com.bumptech.glide.Glide;
 import com.example.findatutor.Networking.Constants;
 import com.example.findatutor.R;
 import com.example.findatutor.Singleton.MySingleton;
@@ -44,7 +46,10 @@ public class TutorMyAccountActivity extends AppCompatActivity {
         textQualifications = findViewById(R.id.textQualifications);
         textDescription = findViewById(R.id.textDescription);
         edit = findViewById(R.id.editTutorAccount);
-        edit.setOnClickListener(v -> startActivity(new Intent(TutorMyAccountActivity.this, EditTutorMyAccountActivity.class)));
+        edit.setOnClickListener(v -> {
+            startActivity(new Intent(TutorMyAccountActivity.this, EditTutorMyAccountActivity.class));
+            finish();
+        });
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Please Wait");
@@ -66,7 +71,10 @@ public class TutorMyAccountActivity extends AppCompatActivity {
                 String stringHourlyCost = object.getString("HourlyCost");
                 String stringQualifications = object.getString("Qualifications");
                 String stringDescription = object.getString("Description");
-                Glide.with(TutorMyAccountActivity.this).load(imgUrl).into(textProfilePic);
+
+                byte[] decodedString = Base64.decode(imgUrl, Base64.DEFAULT);
+                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                textProfilePic.setImageBitmap(decodedByte);
 
                 textSubjects.setText(stringSubjects);
                 textHourlyCost.setText(stringHourlyCost);

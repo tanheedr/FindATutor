@@ -4,7 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -12,7 +15,6 @@ import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.toolbox.StringRequest;
-import com.bumptech.glide.Glide;
 import com.example.findatutor.Networking.Constants;
 import com.example.findatutor.R;
 import com.example.findatutor.Singleton.MySingleton;
@@ -42,7 +44,10 @@ public class ParentMyAccountActivity extends AppCompatActivity {
         firstName = findViewById(R.id.parentFirstName);
         surname = findViewById(R.id.parentSurname);
         edit = findViewById(R.id.editParentAccount);
-        edit.setOnClickListener(v -> startActivity(new Intent(ParentMyAccountActivity.this, EditParentMyAccountActivity.class)));
+        edit.setOnClickListener(v -> {
+            startActivity(new Intent(ParentMyAccountActivity.this, EditParentMyAccountActivity.class));
+            finish();
+        });
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Please Wait");
@@ -59,7 +64,10 @@ public class ParentMyAccountActivity extends AppCompatActivity {
                 String imgUrl = object.getString("Photo");
                 String stringFirstName = object.getString("FirstName");
                 String stringSurname = object.getString("Surname");
-                Glide.with(ParentMyAccountActivity.this).load(imgUrl).into(photo);
+
+                byte[] decodedString = Base64.decode(imgUrl, Base64.DEFAULT);
+                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                photo.setImageBitmap(decodedByte);
 
                 firstName.setText(stringFirstName);
                 surname.setText(stringSurname);

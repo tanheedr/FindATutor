@@ -1,9 +1,14 @@
 package com.example.findatutor.Activities;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,7 +22,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.toolbox.StringRequest;
-import com.bumptech.glide.Glide;
 import com.example.findatutor.Models.Chat;
 import com.example.findatutor.Networking.Constants;
 import com.example.findatutor.Networking.ApiClient;
@@ -46,6 +50,7 @@ public class ChatActivity extends AppCompatActivity {
     TextView firstName, surname;
     MaterialEditText message;
     ImageButton send;
+    Button newSession;
     private RecyclerView recyclerView;
     private List<Chat> chats;
     private ChatsAdapter adapter;
@@ -60,6 +65,7 @@ public class ChatActivity extends AppCompatActivity {
         surname = findViewById(R.id.chatSurname);
         message = findViewById(R.id.chatMessage);
         send = findViewById(R.id.chatSend);
+        newSession = findViewById(R.id.chatNewSession);
 
         recyclerView = findViewById(R.id.chatRecyclerView);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
@@ -78,6 +84,8 @@ public class ChatActivity extends AppCompatActivity {
             displayChat();
         });
 
+        newSession.setOnClickListener(v -> startActivity(new Intent(ChatActivity.this, CalendarWeeklyActivity.class)));
+
     }
 
     public void GetUserDataRequest() {
@@ -88,7 +96,10 @@ public class ChatActivity extends AppCompatActivity {
                 String imgUrl = object.getString("Photo");
                 String stringFirstName = object.getString("FirstName");
                 String stringSurname = object.getString("Surname");
-                Glide.with(ChatActivity.this).load(imgUrl).into(photo);
+
+                byte[] decodedString = Base64.decode(imgUrl, Base64.DEFAULT);
+                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                photo.setImageBitmap(decodedByte);
 
                 firstName.setText(stringFirstName);
                 surname.setText(stringSurname);
@@ -126,7 +137,6 @@ public class ChatActivity extends AppCompatActivity {
                 Toast.makeText(ChatActivity.this, "Error on:" + t.toString(), Toast.LENGTH_SHORT).show();
             }
         });
-        displayChat();
     }
 
     public boolean onCreateOptionsMenu(Menu menu){

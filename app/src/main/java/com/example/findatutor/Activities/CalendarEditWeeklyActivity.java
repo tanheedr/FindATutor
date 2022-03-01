@@ -75,8 +75,7 @@ public class CalendarEditWeeklyActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Name name = names.get(position);
-                String firstName = name.getFirstName();
-                String surname = name.getSurname();
+
                 Integer ID = Integer.valueOf(name.getID());
                 SharedPreferenceManager.getmInstance(adapter.context.getApplicationContext()).NameUser(ID);
             }
