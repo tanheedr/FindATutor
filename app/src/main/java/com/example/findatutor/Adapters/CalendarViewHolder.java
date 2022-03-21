@@ -13,6 +13,10 @@ import java.util.ArrayList;
 
 public class CalendarViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
+    /*
+    Template to create a singular cell for the calendar
+    */
+
     public final View cellCalendarView;
     public final TextView day;
     private final ArrayList<LocalDate> days;

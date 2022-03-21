@@ -24,6 +24,12 @@ import java.util.List;
 
 public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHolder>{
 
+    /*
+    Used to present the details of those that the user has messaged with in MessageActivity.
+    Presents the recipient's full name, profile picture, most recent message and the timestamp
+    of the most recent message.
+    */
+
     private final List<User> users;
     private final Context context;
 

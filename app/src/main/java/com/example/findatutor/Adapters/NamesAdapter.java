@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.findatutor.Models.Name;
@@ -16,8 +15,13 @@ import java.util.List;
 
 public class NamesAdapter extends BaseAdapter{
 
+    /*
+    Used to present the names of the most recently messaged in CalendarEditWeeklyActivity.
+    Displays the user's full name.
+    */
+
     public Context context;
-    private List<Name> names;
+    private final List<Name> names;
 
     public NamesAdapter(Context context, List<Name> names){
         this.context = context;

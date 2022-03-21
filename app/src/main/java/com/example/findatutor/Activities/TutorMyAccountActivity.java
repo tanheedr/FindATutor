@@ -1,7 +1,5 @@
 package com.example.findatutor.Activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -13,6 +11,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.Request;
 import com.android.volley.toolbox.StringRequest;
@@ -28,6 +28,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class TutorMyAccountActivity extends AppCompatActivity {
+
+    /*
+    Displays the user's profile picture, subjects, hourly cost, qualifications and description.
+    Allows the user to update these details.
+    */
 
     ImageView textProfilePic;
     TextView textSubjects, textHourlyCost, textQualifications, textDescription;
@@ -46,6 +51,7 @@ public class TutorMyAccountActivity extends AppCompatActivity {
         textQualifications = findViewById(R.id.textQualifications);
         textDescription = findViewById(R.id.textDescription);
         edit = findViewById(R.id.editTutorAccount);
+
         edit.setOnClickListener(v -> {
             startActivity(new Intent(TutorMyAccountActivity.this, EditTutorMyAccountActivity.class));
             finish();
@@ -80,7 +86,7 @@ public class TutorMyAccountActivity extends AppCompatActivity {
                 textHourlyCost.setText(stringHourlyCost);
                 textQualifications.setText(stringQualifications);
                 textDescription.setText(stringDescription);
-                progressDialog.hide();
+                progressDialog.dismiss();
 
             } catch (JSONException e) {
                 e.printStackTrace();

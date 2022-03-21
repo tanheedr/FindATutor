@@ -2,7 +2,13 @@ package com.example.findatutor.Networking;
 
 public class Constants {
 
-    public static final String BASE_URL = "http://192.168.0.19/FindATutor/"; //AT HOME: 192.168.0.19
+    /*
+    Stores required URL's as attributes in one class
+    BASE_URL specifies the path file
+    The other URL's specify the file
+    */
+
+    public static final String BASE_URL = "http://192.168.137.253/FindATutor/"; //AT HOME: 192.168.0.19
     public static final String LOGIN_URL = BASE_URL + "login.php";
     public static final String REGISTER_URL = BASE_URL + "register.php";
     public static final String FORGET_PASSWORD_URL = BASE_URL + "forgetPassword.php";

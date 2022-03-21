@@ -16,13 +16,20 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.findatutor.Activities.ChatActivity;
-import com.example.findatutor.R;
 import com.example.findatutor.Models.Tutor;
+import com.example.findatutor.R;
 import com.example.findatutor.Singleton.SharedPreferenceManager;
 
 import java.util.List;
 
 public class TutorsAdapter extends RecyclerView.Adapter<TutorsAdapter.TutorViewHolder> {
+
+    /*
+    Used to present available tutors based on what has been searched in SearchActivity
+    For each tutor, their full name, picture, subjects, hourly cost, qualifications and description
+    are presented. The id is also stored, and if the user clicks on a tutor's card, ChatActivity
+    will open up with the tutor's stored id used to gather information about the recipient.
+    */
 
     private final List<Tutor> tutors;
     private final Context context;

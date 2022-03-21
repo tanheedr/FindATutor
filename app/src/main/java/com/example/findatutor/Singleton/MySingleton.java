@@ -1,5 +1,6 @@
 package com.example.findatutor.Singleton;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 
 import com.android.volley.Cache;
@@ -13,9 +14,16 @@ import com.android.volley.toolbox.Volley;
 
 public class MySingleton {
 
+    /*
+    Can only allow one instance of this object
+    Purpose is to limit the number of object creations to one, ensuring access control to resources
+    There must be global access to the instance
+    */
+
+    @SuppressLint("StaticFieldLeak")
     private static MySingleton mInstance;
     private RequestQueue mRequestQueue;
-    private Context mCtx;
+    private final Context mCtx;
 
     public MySingleton(Context mCtx) {
         this.mCtx = mCtx;

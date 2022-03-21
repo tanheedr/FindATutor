@@ -1,9 +1,5 @@
 package com.example.findatutor.Activities;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -18,6 +14,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -37,11 +37,19 @@ import java.util.Map;
 
 public class EditParentMyAccountActivity extends AppCompatActivity {
 
+    /*
+    Upon starting the activity, the user's full name and current profile picture is displayed via a post request
+    If the user wishes to update their picture, the program will first ask for permission to gain access to the
+    user's gallery. Once permission is granted, the user can select any picture from their gallery. The user can
+    then save the image which is converted to base64 and updated on the database.
+    */
+
     ImageView photo;
     TextView firstName, surname;
     Button upload, save;
     CharSequence[] options = {"Gallery", "Cancel"};
     String selectedImage;
+    private ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,18 +62,23 @@ public class EditParentMyAccountActivity extends AppCompatActivity {
         upload = findViewById(R.id.editParentUpload);
         save = findViewById(R.id.saveParentAccount);
 
+        dialog = new ProgressDialog(this);
+        dialog.setTitle("Please Wait");
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+
         GetParentDataRequest();
         requirePermission();
 
         upload.setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(EditParentMyAccountActivity.this);
             builder.setTitle("Select Image");
-            builder.setItems(options, (dialog, which) -> {
+            builder.setItems(options, (dialogTwo, which) -> {
                 if(options[which].equals("Gallery")){
                     Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     startActivityForResult(gallery, 1);
                 }else{
-                    dialog.dismiss();
+                    dialogTwo.dismiss();
                 }
             });
             builder.show();
@@ -84,8 +97,10 @@ public class EditParentMyAccountActivity extends AppCompatActivity {
             Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.JPEG, 90, stream);
+            // Start of base64 encoding
             byte[] encodedString = stream.toByteArray();
             selectedImage = Base64.encodeToString(encodedString, Base64.DEFAULT);
+            // End of base64 encoding
             photo.setImageBitmap(bitmap);
         } catch (IOException e) {
             e.printStackTrace();
@@ -136,9 +151,12 @@ public class EditParentMyAccountActivity extends AppCompatActivity {
             try {
                 JSONObject object = new JSONObject(response);
                 String imgUrl = object.getString("Photo");
+                // Start of base64 decoding
                 byte[] decodedString = Base64.decode(imgUrl, Base64.DEFAULT);
                 Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                // End of base64 decoding
                 photo.setImageBitmap(decodedByte);
+                dialog.hide();
             } catch (JSONException e) {
                 e.printStackTrace();
             }

@@ -1,19 +1,21 @@
 package com.example.findatutor.Activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.findatutor.R;
 import com.example.findatutor.Singleton.SharedPreferenceManager;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 public class HomepageActivity extends AppCompatActivity {
+
+    /*
+    Presents access to the user's profile page, calendar and messages and also presents a logout button.
+    */
 
     MaterialEditText search;
     Button myAccount, calendar, messages, logout;

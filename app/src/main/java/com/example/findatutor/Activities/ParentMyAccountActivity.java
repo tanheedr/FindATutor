@@ -1,7 +1,5 @@
 package com.example.findatutor.Activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -12,6 +10,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.Request;
 import com.android.volley.toolbox.StringRequest;
@@ -27,6 +27,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ParentMyAccountActivity extends AppCompatActivity {
+
+    /*
+    Displays the user's profile picture and full name.
+    Allows the user to update their profile picture.
+    */
 
     ImageView photo;
     TextView firstName, surname;
@@ -71,7 +76,7 @@ public class ParentMyAccountActivity extends AppCompatActivity {
 
                 firstName.setText(stringFirstName);
                 surname.setText(stringSurname);
-                progressDialog.hide();
+                progressDialog.dismiss();
 
             } catch (JSONException e) {
                 e.printStackTrace();

@@ -18,12 +18,19 @@ import com.example.findatutor.Singleton.SharedPreferenceManager;
 
 import java.util.List;
 
-public class SessionAdapter extends RecyclerView.Adapter<SessionAdapter.MyViewHolder> {
+public class SessionsAdapter extends RecyclerView.Adapter<SessionsAdapter.MyViewHolder> {
+
+    /*
+    Used to present saved sessions in CalendarWeeklyActivity
+    Displays the full name, start time and end time of the session and who it is with.
+    Also stores the user's id with the session row. The row (layout) is clickable and will open ChatActivity
+    using the stored id as the parameter of who's information to gather.
+    */
 
     private final List<Session> sessions;
     private final Context context;
 
-    public SessionAdapter(List<Session> sessions, Context context) {
+    public SessionsAdapter(List<Session> sessions, Context context) {
         this.sessions = sessions;
         this.context = context;
     }

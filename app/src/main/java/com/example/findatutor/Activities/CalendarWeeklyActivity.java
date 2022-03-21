@@ -1,26 +1,19 @@
 package com.example.findatutor.Activities;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ListView;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.example.findatutor.Adapters.CalendarAdapter;
-import com.example.findatutor.Adapters.NamesAdapter;
-import com.example.findatutor.Adapters.SessionAdapter;
-import com.example.findatutor.Models.Name;
+import com.example.findatutor.Adapters.SessionsAdapter;
 import com.example.findatutor.Models.Session;
 import com.example.findatutor.Networking.ApiClient;
 import com.example.findatutor.Networking.ApiInterface;
@@ -36,20 +29,23 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.example.findatutor.Networking.CalendarUtils.date;
 import static com.example.findatutor.Networking.CalendarUtils.daysOfWeekArray;
 import static com.example.findatutor.Networking.CalendarUtils.monthYearFromDate;
 
 public class CalendarWeeklyActivity extends AppCompatActivity implements CalendarAdapter.OnItemListener {
 
+    /*
+    Displays a weekly calendar from sunday to saturday, with the current date automatically selected
+    Allows movement to other weeks
+    Allows sessions to be created and displays currently stored sessions below
+    */
+
     private RecyclerView list;
     private List<Session> sessions;
-    private SessionAdapter adapter;
+    private SessionsAdapter adapter;
 
     private TextView weekYear;
-    private Button previousWeek, nextWeek, newSession;
     private RecyclerView recyclerView;
-    private ConstraintLayout layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,11 +53,10 @@ public class CalendarWeeklyActivity extends AppCompatActivity implements Calenda
         setContentView(R.layout.activity_calendar_weekly);
 
         weekYear = findViewById(R.id.calendarWeekYear);
-        previousWeek = findViewById(R.id.calendarPreviousWeek);
-        nextWeek = findViewById(R.id.calendarNextWeek);
-        newSession = findViewById(R.id.calendarNewSession);
+        Button previousWeek = findViewById(R.id.calendarPreviousWeek);
+        Button nextWeek = findViewById(R.id.calendarNextWeek);
+        Button newSession = findViewById(R.id.calendarNewSession);
         recyclerView = findViewById(R.id.calendarWeeklyRecyclerView);
-        layout = findViewById(R.id.rowSessionLayout);
         CalendarUtils.date = LocalDate.now();
 
         list = findViewById(R.id.calendarList);
@@ -82,7 +77,10 @@ public class CalendarWeeklyActivity extends AppCompatActivity implements Calenda
             setWeek();
         });
 
-        newSession.setOnClickListener(v -> startActivity(new Intent(CalendarWeeklyActivity.this, CalendarEditWeeklyActivity.class)));
+        newSession.setOnClickListener(v -> {
+            startActivity(new Intent(CalendarWeeklyActivity.this, CalendarEditWeeklyActivity.class));
+            finish();
+        });
 
     }
 
@@ -107,11 +105,12 @@ public class CalendarWeeklyActivity extends AppCompatActivity implements Calenda
     private void getSessions() {
         ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
         Call<List<Session>> call = apiInterface.getSessions(SharedPreferenceManager.getID(), CalendarUtils.date.toString());
+        // Calls getSessions function in ApiInterface with the user's id and the current date as parameters
         call.enqueue(new Callback<List<Session>>() {
             @Override
             public void onResponse(@NonNull Call<List<Session>> call, @NonNull Response<List<Session>> response) {
                 sessions = response.body();
-                adapter = new SessionAdapter(sessions, CalendarWeeklyActivity.this);
+                adapter = new SessionsAdapter(sessions, CalendarWeeklyActivity.this);
                 list.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
             }

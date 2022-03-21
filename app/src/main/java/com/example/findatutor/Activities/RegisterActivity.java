@@ -1,7 +1,5 @@
 package com.example.findatutor.Activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +8,8 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -21,8 +21,19 @@ import com.rengwuxian.materialedittext.MaterialEditText;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class RegisterActivity extends AppCompatActivity {
+
+    /*
+    Activity for user to create an account
+    The user must enter their full name, email address, password and account type in order to register.
+    They must confirm this password by typing it again.
+    If the above is complete to a suitable standard (based on restriction in Operations.php such as password
+    length), the user can then register.
+    If a tutor account is created, not only does the program create a field in the 'accounts' table in the
+    database, but it will also create a field in the 'tutordescription' table.
+    */
 
     MaterialEditText firstName, surname, email, password, confirmPassword;
     RadioGroup radioGroup;
@@ -41,11 +52,11 @@ public class RegisterActivity extends AppCompatActivity {
         register = findViewById(R.id.register);
 
         register.setOnClickListener(v -> {
-            String txtFirstName = firstName.getText().toString().trim();
-            String txtSurname = surname.getText().toString().trim();
-            String txtEmail = email.getText().toString().trim();
-            String txtPassword = password.getText().toString();
-            String txtConfirmPassword = confirmPassword.getText().toString();
+            String txtFirstName = Objects.requireNonNull(firstName.getText()).toString().trim();
+            String txtSurname = Objects.requireNonNull(surname.getText()).toString().trim();
+            String txtEmail = Objects.requireNonNull(email.getText()).toString().trim();
+            String txtPassword = Objects.requireNonNull(password.getText()).toString();
+            String txtConfirmPassword = Objects.requireNonNull(confirmPassword.getText()).toString();
             if (TextUtils.isEmpty(txtFirstName) || TextUtils.isEmpty(txtSurname) || TextUtils.isEmpty(txtEmail) || TextUtils.isEmpty(txtPassword) || TextUtils.isEmpty(txtConfirmPassword)){
                 Toast.makeText(RegisterActivity.this, "All fields required", Toast.LENGTH_SHORT).show();
             }

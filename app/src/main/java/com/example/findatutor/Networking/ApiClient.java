@@ -11,10 +11,19 @@ public class ApiClient {
     public static final String BASE_URL = Constants.BASE_URL;
     public static Retrofit retrofit;
 
+    /*
+    GSON is a Java API
+    Converts Java objects into JSON representation and vice versa
+    Serializes/Parses the objects
+    */
     public static Gson gson = new GsonBuilder()
             .setLenient()
             .create();
 
+    /*
+    Retrofit is a REST client for Java and Android
+    Allows JSON retrieval and uploading
+    */
     public static Retrofit getApiClient(){
         if(retrofit == null){
             retrofit = new Retrofit.Builder()

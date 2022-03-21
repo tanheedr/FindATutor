@@ -16,6 +16,12 @@ import java.util.ArrayList;
 
 public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> {
 
+    /*
+    Used to present the calendar in CalendarWeeklyActivity
+    Inherits from CalendarViewHolder.
+    Combines the days of the week with their respective dates for a given week.
+    */
+
     private final ArrayList<LocalDate> days;
     private final OnItemListener onItemListener;
 
@@ -30,12 +36,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(R.layout.cell_calendar, parent, false);
         ViewGroup.LayoutParams params = view.getLayoutParams();
-
-        if(days.size() > 15){ //month
-            params.height = (int) (parent.getHeight() * 0.16666666666666666);
-        }else{ //week
-            params.height = (int) parent.getHeight();
-        }
+        params.height = parent.getHeight();
         return new CalendarViewHolder(view, days, onItemListener);
     }
 

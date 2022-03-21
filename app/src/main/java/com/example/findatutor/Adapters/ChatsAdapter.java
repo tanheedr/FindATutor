@@ -18,6 +18,13 @@ import java.util.List;
 
 public class ChatsAdapter extends RecyclerView.Adapter {
 
+    /*
+    Used to present recent messages between the user and the recipient in ChatActivity.
+    2 settings within each function: A message sent by the user and a message received by the user.
+    Both settings follow the same steps, except are coloured differently and appear on different
+    sides of the screen based on what the setting is; ITEM_SENT or ITEM_RECEIVED.
+    */
+
     private final List<Chat> chats;
     private final Context context;
     final int ITEM_SENT = 1;

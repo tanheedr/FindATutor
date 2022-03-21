@@ -1,9 +1,5 @@
 package com.example.findatutor.Activities;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -20,12 +16,16 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.toolbox.StringRequest;
 import com.example.findatutor.Networking.Constants;
-import com.example.findatutor.Singleton.MySingleton;
 import com.example.findatutor.R;
+import com.example.findatutor.Singleton.MySingleton;
 import com.example.findatutor.Singleton.SharedPreferenceManager;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
@@ -40,11 +40,20 @@ import java.util.Objects;
 
 public class EditTutorMyAccountActivity extends AppCompatActivity {
 
+    /*
+    Same basics as EditParentMyAccountActivity
+    This activity also allows the edit of the user's subjects, hourly cost, qualifications and description
+    These variables are initially automatically filled with the user's currently saved information as it most
+    likely the user would only like to edit one or two variables and keep the rest the same.
+    The data is updated via a post request.
+    */
+
     ImageView editProfilePic;
     MaterialEditText editSubjects, editHourlyCost, editQualifications, editDescription;
     Button upload, save;
     CharSequence[] options = {"Gallery", "Cancel"};
     String selectedImage;
+    private ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +67,11 @@ public class EditTutorMyAccountActivity extends AppCompatActivity {
         editDescription = findViewById(R.id.editDescription);
         upload = findViewById(R.id.editUpload);
         save = findViewById(R.id.SaveTutorAccount);
+
+        dialog = new ProgressDialog(this);
+        dialog.setTitle("Please Wait");
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
 
         GetTutorDataRequest();
         requirePermission();
@@ -171,6 +185,7 @@ public class EditTutorMyAccountActivity extends AppCompatActivity {
                 editHourlyCost.setText(stringHourlyCost);
                 editQualifications.setText(stringQualifications);
                 editDescription.setText(stringDescription);
+                dialog.hide();
 
             } catch (JSONException e) {
                 e.printStackTrace();
