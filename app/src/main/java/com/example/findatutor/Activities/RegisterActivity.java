@@ -82,7 +82,7 @@ public class RegisterActivity extends AppCompatActivity {
         progressDialog.show();
         String url = Constants.REGISTER_URL;
         StringRequest request = new StringRequest(Request.Method.POST, url, response -> {
-            if (response.equals("Successfully Registered")){
+            if (response.equals("Successfully Registered\nPlease head to your email to verify your account")){
                 progressDialog.dismiss();
                 Toast.makeText(RegisterActivity.this, response, Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(RegisterActivity.this, MainActivity.class));
