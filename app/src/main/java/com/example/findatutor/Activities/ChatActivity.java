@@ -99,7 +99,6 @@ public class ChatActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Log.d("TAG", "run: ");
                 displayChat();
                 handler.postDelayed(this, delay);
             }
