@@ -13,7 +13,7 @@ class Operations{
 
     public function registerUser($accountType, $firstName, $surname, $email, $password, $confirmPassword){
 
-        $hashedPassword = hash('sha1', $password);
+        $hashedPassword = hash('sha256', $password);
     
         if ($accountType == "Parent"){
             $accountType = 1;
@@ -41,7 +41,7 @@ class Operations{
             if($this -> doesUserExist($email)){
                 echo "This email is already registered";
             }else{
-                $verificationKey = hash('sha1', time().$email);
+                $verificationKey = hash('sha256', time().$email);
                 $statement = $this -> connection -> prepare("INSERT INTO accounts (`AccountType`,`FirstName`,`Surname`,`Email`,`Password`, `VerificationKey`, `ExpiryDate`) VALUES (?,?,?,?,?,?, UTC_TIMESTAMP() + INTERVAL 30 MINUTE)");
                 $statement -> bind_param("isssss", $accountType, $firstName, $surname, $email, $hashedPassword, $verificationKey);
                 if($statement -> execute()){
@@ -144,7 +144,7 @@ class Operations{
             else if($password !== $confirmPassword){
                 echo "Passwords do not match";
             }else{
-                $hashedPassword = hash('sha1', $password);
+                $hashedPassword = hash('sha256', $password);
                 $statement = $this -> connection -> prepare("UPDATE accounts SET Password = ? WHERE Email = ?");
                 $statement -> bind_param("ss", $hashedPassword, $email);
                 if($statement -> execute()){
@@ -165,7 +165,7 @@ class Operations{
     }
 
     public function loginUser($email, $password){
-        $hashedPassword = hash('sha1', $password);
+        $hashedPassword = hash('sha256', $password);
         $statement = $this -> connection -> prepare("SELECT ID FROM accounts WHERE Email = ? AND Password = ? AND accounts.Verified = 1");
         $statement -> bind_param("ss", $email, $hashedPassword);
         $statement -> execute();
