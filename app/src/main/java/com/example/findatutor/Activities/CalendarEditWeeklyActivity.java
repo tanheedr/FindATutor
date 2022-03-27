@@ -93,13 +93,17 @@ public class CalendarEditWeeklyActivity extends AppCompatActivity {
             String end = endTime.getText().toString() + ":00";
             String startDateTime = CalendarUtils.date.toString() + " " + start;
             String endDateTime = CalendarUtils.date.toString() + " " + end;
+            String[] lstart = start.split(":");
+            String[] lend = end.split(":");
             if(start.equals("Start:00") || end.equals("End:00")){ // Checks if start and end time have not been chosen
                 Toast.makeText(CalendarEditWeeklyActivity.this, "Please choose a time", Toast.LENGTH_SHORT).show();
             }else{
-                newSession(SharedPreferenceManager.getNameID(), startDateTime, endDateTime);
-                startActivity(new Intent(CalendarEditWeeklyActivity.this, CalendarWeeklyActivity.class));
-                finish();
-
+                if( (Integer.parseInt(lstart[0]) < Integer.parseInt(lend[0])) || (Integer.parseInt(lstart[0]) == Integer.parseInt(lend[0]) && Integer.parseInt(lstart[1]) < Integer.parseInt(lend[1])) ){
+                    newSession(SharedPreferenceManager.getNameID(), startDateTime, endDateTime);
+                    startActivity(new Intent(CalendarEditWeeklyActivity.this, CalendarWeeklyActivity.class));
+                    finish();
+                }
+                Toast.makeText(CalendarEditWeeklyActivity.this, "Choose a suitable time", Toast.LENGTH_SHORT).show();
             }
         });
     }
