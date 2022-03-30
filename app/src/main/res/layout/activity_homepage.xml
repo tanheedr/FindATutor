@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:text="Homepage"
         android:gravity="center"
-        android:textSize="20sp"
+        android:textSize="25sp"
         android:textStyle="bold"
         android:textColor="@color/colorPrimaryDark"
         android:layout_marginTop="20dp"/>
@@ -23,7 +23,7 @@
         android:hint="Search"
         android:focusable="false"
         app:met_floatingLabel="normal"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
         android:id="@+id/search"
@@ -33,52 +33,83 @@
 
     </com.rengwuxian.materialedittext.MaterialEditText>
 
-    <Button
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="My Account"
-        android:id="@+id/myAccount"
-        android:textAllCaps="false"
-        android:background="@color/colorPrimaryDark"
-        android:textColor="@color/white"
-        android:layout_marginTop="20dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="60dp"
         android:layout_marginRight="20dp"
-        android:layout_marginLeft="20dp"/>
+        android:layout_marginLeft="20dp"
+        android:layout_marginBottom="20dp">
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Calendar"
-        android:id="@+id/calendar"
-        android:textAllCaps="false"
-        android:background="@color/colorPrimaryDark"
-        android:textColor="@color/white"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginLeft="20dp"/>
+        <Button
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:text="My Account"
+            android:id="@+id/myAccount"
+            android:textAllCaps="false"
+            android:textSize="20sp"
+            android:background="@color/colorPrimaryDark"
+            android:textColor="@color/white"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="20dp"/>
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Messages"
-        android:id="@+id/messages"
-        android:textAllCaps="false"
-        android:background="@color/colorPrimaryDark"
-        android:textColor="@color/white"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginLeft="20dp"/>
+        <Button
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:text="Calendar"
+            android:id="@+id/calendar"
+            android:textAllCaps="false"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:background="@color/colorPrimaryDark"
+            android:textColor="@color/white"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="20dp"/>
 
-    <Button
-        android:layout_width="match_parent"
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Logout"
-        android:id="@+id/logout"
-        android:textAllCaps="false"
-        android:background="@color/colorPrimaryDark"
-        android:textColor="@color/white"
+        android:orientation="horizontal"
         android:layout_marginTop="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginLeft="20dp"/>
+        android:layout_marginLeft="20dp"
+        android:layout_marginBottom="20dp">
+
+        <Button
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:text="Messages"
+            android:id="@+id/messages"
+            android:textAllCaps="false"
+            android:textSize="20sp"
+            android:background="@color/colorPrimaryDark"
+            android:textColor="@color/white"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="20dp"/>
+
+        <Button
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:text="Logout"
+            android:id="@+id/logout"
+            android:textAllCaps="false"
+            android:textSize="20sp"
+            android:background="@color/colorPrimaryDark"
+            android:textColor="@color/white"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="20dp"/>
+
+    </LinearLayout>
 
 </LinearLayout>
