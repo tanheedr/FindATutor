@@ -3,8 +3,8 @@
 require_once "operations.php";
 
 $db = new Operations();
-if(isset(htmlspecialchars($_GET["Email"]), htmlspecialchars($_POST["Password"]), htmlspecialchars($_POST["ConfirmPassword"]))){
-    $db -> changePassword(htmlspecialchars($_GET["Email"]), htmlspecialchars($_POST["Password"]), htmlspecialchars($_POST["ConfirmPassword"]));
+if(isset($_GET["Email"], $_POST["Password"], $_POST["ConfirmPassword"])){
+    $db -> changePassword($_GET["Email"], $_POST["Password"], $_POST["ConfirmPassword"]);
 }
 
 ?>

@@ -2,8 +2,8 @@
 
 require "connection.php";
 
-if (isset(htmlspecialchars($_GET['subject']))){
-    $subject = htmlspecialchars($_GET['subject']);
+if (isset($_GET['subject'])){
+    $subject = $_GET['subject'];
     $query = "SELECT FirstName, Surname, Photo, Subjects, HourlyCost, Qualifications, Description FROM accounts, tutordescription WHERE Subjects LIKE '%$subject%' AND TutorID = ID";
     $result = mysqli_query($connection, $query);
     $response = array();

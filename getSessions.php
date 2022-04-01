@@ -6,7 +6,7 @@ $response = array();
 
 if($_SERVER["REQUEST_METHOD"] == "GET"){
     $db = new Operations();
-    $session = $db -> getSessions(htmlspecialchars($_GET["ID"]), htmlspecialchars($_GET["Date"]));
+    $session = $db -> getSessions($_GET["ID"], $_GET["Date"]);
     for ($i = 0; $i < sizeof($session); $i++){
         $response[$i]["ID"] = $session[$i]["ID"];
         $response[$i]["FirstName"] = $session[$i]["FirstName"];

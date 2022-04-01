@@ -6,8 +6,8 @@ $response = array();
 
 if($_SERVER["REQUEST_METHOD"] == "GET"){
     $db = new Operations();
-    if(isset(htmlspecialchars($_GET["VerificationKey"]))){
-        $response = $db -> verify(htmlspecialchars($_GET["VerificationKey"]));
+    if(isset($_GET["VerificationKey"])){
+        $response = $db -> verify($_GET["VerificationKey"]);
     }else{
         $response = "Error";
     }

@@ -7,7 +7,7 @@ $response = array();
 if($_SERVER["REQUEST_METHOD"] == "GET"){
     $db = new Operations();
     if(isset($_GET["Subjects"])){
-        $tutor = $db -> getTutorsWithSearch(htmlspecialchars($_GET["ID"]), htmlspecialchars($_GET["Subjects"]));
+        $tutor = $db -> getTutorsWithSearch($_GET["ID"], $_GET["Subjects"]);
         for ($i = 0; $i < sizeof($tutor); $i++){
             $response[$i]["ID"] = $tutor[$i]["ID"];
             $response[$i]["FirstName"] = $tutor[$i]["FirstName"];

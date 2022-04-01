@@ -6,7 +6,7 @@ $response = array();
 
 if($_SERVER["REQUEST_METHOD"] == "GET"){
     $db = new Operations();
-    $user = $db -> getAllMessages(htmlspecialchars($_GET["ID"]));
+    $user = $db -> getAllMessages($_GET["ID"]);
     for ($i = 0; $i < sizeof($user); $i++){
         $response[$i]["RecipientID"] = $user[$i]["ID"];
         $response[$i]["FirstName"] = $user[$i]["FirstName"];
