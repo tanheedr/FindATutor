@@ -18,11 +18,4 @@ class Connect{
     }
 }
 
-/*$db_name = "tanheeddb";
-$username = "root";
-$password = "";
-$host = "127.0.0.1";
-
-$connection = mysqli_connect($host,$username,$password,$db_name);*/
-
 ?>

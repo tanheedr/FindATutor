@@ -13,8 +13,6 @@ if($_SERVER["REQUEST_METHOD"] == "GET"){
         $response[$i]["Surname"] = $user[$i]["Surname"];
         $response[$i]["Photo"] = $user[$i]["Photo"];
 
-        //$response[$i]["Message"] = $user[$i]["Message"];
-        //$response[$i]["Message"] = $chat[$i]["Message"];
         $ciphertext = $user[$i]["Message"];
         $ciphering = "AES-128-CTR"; // Stores cipher method
         $option = 0; // Holds bitwise disjunction of flags

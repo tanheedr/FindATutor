@@ -12,10 +12,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $encryption_iv = "9432982127646892"; // Initialization Vector
     $encryption = openssl_encrypt($plaintext, $plaining, $encryption_key, $option, $encryption_iv);
     
-    $db -> sendMessage(
-            $_POST["SenderID"],
-            $_POST["ReceiverID"],
-            $encryption);
+    $db -> sendMessage($_POST["SenderID"], $_POST["ReceiverID"], $encryption);
 }else{
     echo "Invalid Request";
 }

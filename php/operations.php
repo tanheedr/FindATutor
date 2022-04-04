@@ -92,7 +92,7 @@ class Operations{
     }
 
     public function verify($verificationKey){
-        $statement = $this -> connection -> prepare("SELECT VerificationKey, Verified FROM accounts WHERE VerificationKey = ? AND UTC_TIMESTAMP() < ExpiryDate AND Verified = 0 LIMIT 1");
+        $statement = $this -> connection -> prepare("SELECT DISTINCT VerificationKey, Verified FROM accounts WHERE VerificationKey = ? AND UTC_TIMESTAMP() < ExpiryDate AND Verified = 0");
         $statement -> bind_param("s", $verificationKey);
         $statement -> execute();
         $statement -> store_result();
@@ -132,7 +132,7 @@ class Operations{
     }
 
     public function changePassword($email, $password, $confirmPassword){
-        $statement = $this -> connection -> prepare("SELECT ExpiryDate FROM accounts WHERE Email = ? AND UTC_TIMESTAMP() < ExpiryDate LIMIT 1");
+        $statement = $this -> connection -> prepare("SELECT DISTINCT ExpiryDate FROM accounts WHERE Email = ? AND UTC_TIMESTAMP() < ExpiryDate");
         $statement -> bind_param("s", $email);
         $statement -> execute();
         $statement -> store_result();

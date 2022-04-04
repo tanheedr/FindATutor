@@ -10,7 +10,6 @@ if($_SERVER["REQUEST_METHOD"] == "GET"){
     for ($i = 0; $i < sizeof($chat); $i++){
         $response[$i]["SenderID"] = $chat[$i]["SenderID"];
         
-        //$response[$i]["Message"] = $chat[$i]["Message"];
         $ciphertext = $chat[$i]["Message"];
         $ciphering = "AES-128-CTR"; // Stores cipher method
         $option = 0; // Holds bitwise disjunction of flags

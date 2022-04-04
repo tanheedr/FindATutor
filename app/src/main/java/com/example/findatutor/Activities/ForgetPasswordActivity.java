@@ -26,7 +26,7 @@ public class ForgetPasswordActivity extends AppCompatActivity {
     User must type in the email address registered to their account. This email address receives an email from
     findatutor7@gmail.com with a link to the password reset webpage, changePassword.php. The link has a 30 minute
     live duration, after which it is expired. Once the link has been used, it cannot be accessed again.
-    The user must tpe in their desired password and confirm it, when this is set, the user's password is updated
+    The user must type in their desired password and confirm it, when this is set, the user's password is updated
     in the database.
     */
 
