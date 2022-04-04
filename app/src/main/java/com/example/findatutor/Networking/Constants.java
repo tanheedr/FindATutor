@@ -3,9 +3,9 @@ package com.example.findatutor.Networking;
 public class Constants {
 
     /*
-    Stores required URL's as attributes in one class
+    Stores required URLs as attributes in one class
     BASE_URL specifies the path file
-    The other URL's specify the file
+    The other URLs specify the file
     */
 
     public static final String BASE_URL = "http://192.168.0.19/FindATutor/";
