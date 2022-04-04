@@ -94,6 +94,7 @@ public class ChatActivity extends AppCompatActivity {
         GetUserDataRequest();
         displayChat();
 
+        // Every second, displayChat() is run
         final Handler handler = new Handler();
         final int delay = 1000; // 1000 milliseconds
         handler.postDelayed(new Runnable() {
